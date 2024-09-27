@@ -12,7 +12,6 @@ export default function Home() {
           <section className=" lg:h-screen flex justify-center relative  ">
             <Hero></Hero>
           </section>
-
           <section
             className="w-full py-12 flex justify-center md:py-24 lg:py-32 bg-white"
             id="features"

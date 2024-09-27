@@ -148,11 +148,11 @@ export default function StudentBrowsingPage() {
   const [selectedFacilitator, setSelectedFacilitator] = React.useState(null);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 ">
+    <div className="flex flex-col min-h-screen bg-gray-100 spacing-y-4">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
-          <h1 className="text-xl font-bold ">Find a Facilitator</h1>
+          <h1 className="text-3xl font-bold uppercase tracking-wider font-light ml-4">Find a Facilitator</h1>
           <div className="flex items-center mt-4 w-full md:mt-0 md:w-auto">
             <div className="relative flex-grow mr-4">
               <Input
