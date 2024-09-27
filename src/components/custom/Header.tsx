@@ -62,8 +62,10 @@ const Header = () => {
           </div>
         </SignedOut>
         <SignedIn>
-          <div className=" max-xl:absolute right-0  xl:flex-1 text-right lg:px-5 top-[2px]">
-            <UserButton />
+          <div className="max-xl:absolute right-0 xl:flex-1 text-right lg:px-5 top-0">
+            <div className="absolute right-2 top-0 w-9 h-9 rounded-full bg-blue-300 flex items-center justify-center">
+              <UserButton />
+            </div>
           </div>
         </SignedIn>
       </div>

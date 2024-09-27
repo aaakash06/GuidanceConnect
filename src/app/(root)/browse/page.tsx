@@ -281,7 +281,7 @@ export default function StudentBrowsingPage() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-gray-600 mb-2">
+                    <p className="text-sm text-gray-600 mb-2 mt-4">
                       {facilitator.bio}
                     </p>
                     <div className="flex flex-wrap items-center gap-2 mb-2 xl:h-16">
@@ -291,7 +291,7 @@ export default function StudentBrowsingPage() {
                         </Badge>
                       ))}
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-sm mt-4">
                       <span className="flex items-center">
                         <Clock className="h-4 w-4 mr-1 text-green-500" />
                         {facilitator.availability}
