@@ -51,7 +51,7 @@ export default function StudentSchedulePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-8 w-4/5">
       <h1 className="text-3xl font-bold mb-8 text-gray-800">My Schedule</h1>
 
       {/* Upcoming Sessions */}

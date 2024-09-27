@@ -140,8 +140,8 @@ export default function Home() {
 
           <section className="w-full flexx py-12  md:py-24 lg:py-32 bg-blue-600">
             <div className="container px-4 md:px-6">
-              <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="space-y-2">
+              <div className="flex flex-col items-center space-y-6 text-center">
+                <div className="space-y-4">
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
                     Ready to Connect?
                   </h2>
@@ -150,8 +150,8 @@ export default function Home() {
                     your goals.
                   </p>
                 </div>
-                <div className="w-full max-w-sm space-y-2">
-                  <form className="flex space-x-2">
+                <div className="w-full flex justify-center">
+                  <form className="flex w-full max-w-2xl space-x-2">
                     <Input
                       className="max-w-lg flex-1 bg-white"
                       placeholder="Enter your email"
@@ -159,7 +159,7 @@ export default function Home() {
                     />
                     <Button
                       type="submit"
-                      className="bg-white text-blue-600 hover:bg-gray-100"
+                      className="bg-white text-blue-600 hover:bg-gray-100 max-w-full"
                     >
                       Get Started
                     </Button>

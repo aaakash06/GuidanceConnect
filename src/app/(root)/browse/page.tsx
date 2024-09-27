@@ -284,7 +284,7 @@ export default function StudentBrowsingPage() {
                     <p className="text-sm text-gray-600 mb-2">
                       {facilitator.bio}
                     </p>
-                    <div className="flex flex-wrap gap-2 mb-2">
+                    <div className="flex flex-wrap items-center gap-2 mb-2 xl:h-16">
                       {facilitator.skills.map((skill, index) => (
                         <Badge key={index} variant="secondary">
                           {skill}

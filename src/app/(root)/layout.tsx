@@ -17,7 +17,7 @@ export default async function RootLayout({
   if (userId) {
     // user = await getUserByClerkId(userId);
     // userRole = user!.role;
-    userRole = "facilitator"
+    userRole = "student"
   }
   return (
     <RoleContextProvider userRole={userRole} user={JSON.stringify(user)}>
