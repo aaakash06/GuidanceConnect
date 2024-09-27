@@ -1,7 +1,9 @@
 "use server";
 import { redirect } from "next/navigation";
 import { connectToDB } from "./connect.db";
-import { User } from "./models.db";
+import { IUser, User } from "./models.db";
+import { FilterQuery } from "mongoose";
+import { Tag } from "lucide-react";
 interface CreateUserClerkType {
   clerkId: string;
   name: string;
@@ -124,7 +126,6 @@ export const getRoleByClerkId = async (clerkId: string) => {
 export const getCalendlyByClerkId = async (clerkId: string) => {
   try {
     await connectToDB();
-    // console.log("getRole was called");
     const user = await User.findOne({ clerkId });
     if (!user) {
       return null;
@@ -135,7 +136,74 @@ export const getCalendlyByClerkId = async (clerkId: string) => {
     if (user.meetingUrl == "") return null;
     return user.meetingUrl;
   } catch (e) {
-    console.log("error; getRole");
+    console.log("error; getCalendlyUR");
     // console.log(e);
+  }
+};
+export const getAllFacilitators = async () => {
+  try {
+    await connectToDB();
+    const allFacilitators = await User.find({ role: "facilitator" });
+    if (!allFacilitators) {
+      return null;
+    }
+    return allFacilitators;
+  } catch (e) {
+    console.log("error; getAllFacilitators");
+    return null;
+    // console.log(e);
+  }
+};
+
+export const getAllFacilitatorss = async (
+  priceLow?: number,
+  priceHigh?: number,
+  search?: string,
+  language?: string,
+  experience?: string,
+  filter?: string,
+  page?: number,
+  subject?: string
+) => {
+  let query: FilterQuery<typeof User> = {};
+  query = { role: "facilitator" };
+
+  // Apply price range filter if both values are provided
+  if (priceLow !== undefined && priceHigh !== undefined) {
+    query["price"] = { $gte: priceLow, $lte: priceHigh };
+  }
+
+  // Apply subject specialization filter
+  if (subject) {
+    query["specializations"] = { $in: [subject] };
+  }
+
+  // Apply language filter if provided
+  if (language) {
+    query["languages"] = { $in: [language] };
+  }
+
+  // Apply search filter for name, username, or bio
+  if (search) {
+    query["$or"] = [
+      { name: new RegExp(search, "i") },
+      { username: new RegExp(search, "i") },
+      { bio: new RegExp(search, "i") },
+    ];
+  }
+
+  // Pagination setup
+  const limit = 10; // Set a default limit for items per page
+  const skip = page ? (page - 1) * limit : limit;
+
+  try {
+    await connectToDB();
+    // Execute the query with pagination and return the result
+    const facilitators = await User.find(query).skip(skip).limit(limit);
+
+    return facilitators;
+  } catch (err) {
+    console.log("coudn't fetch facilitator with query ");
+    console.log(err);
   }
 };
