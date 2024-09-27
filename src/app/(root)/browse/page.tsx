@@ -240,7 +240,7 @@ export default function StudentBrowsingPage() {
           </aside>
 
           {/* Facilitator Grid */}
-          <div className="flex-grow  h-[calc(100vh-6rem)]">
+          <div className="flex-grow  h-[calc(100vh-5rem)]">
             <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-6  max-h-full custom-scrollbar overflow-y-scroll">
               {facilitators.map((facilitator) => (
                 <Card key={facilitator.id} className="overflow-hidden">
