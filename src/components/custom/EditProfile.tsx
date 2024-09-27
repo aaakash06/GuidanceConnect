@@ -8,33 +8,23 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import { IUser } from "@/db/models.db";
 
-export default function FacilitatorEditProfile() {
+export default function FacilitatorEditProfile({ user }: { user: string }) {
+  const User: IUser = JSON.parse(user);
   const [facilitator, setFacilitator] = React.useState({
-    name: "Dr. Emily Chen",
-    image: "https://i.pravatar.cc/300?img=47",
-    bio: "Experienced computer science professor with a passion for mentoring students in AI and machine learning.",
-    expertise: [
-      "Artificial Intelligence",
-      "Machine Learning",
-      "Computer Science",
-      "Career Guidance",
-    ],
-    skills: ["Python", "TensorFlow", "Data Analysis", "Research Methodology"],
-    accomplishments: [
-      "Ph.D. in Computer Science from Stanford University",
-      "Published 20+ research papers in top-tier conferences",
-      "Mentored 50+ students who secured positions in leading tech companies",
-      "Certified AWS Machine Learning Specialist",
-    ],
-    email: "emily.chen@example.com",
-    phone: "+1 (555) 123-4567",
-    linkedin: "https://www.linkedin.com/in/emilychen",
-    website: "https://www.emilychen.com",
+    price: User.price,
+    picture: User.picture,
+    bio: User.bio,
+    expertise: User.specializations,
+    accomplishments: User.accomplishments || [],
+    meetingUrl: User.meetingUrl,
+    phone: User.phone || "",
+    linkedin: User.linkedin || "",
   });
 
   const [newExpertise, setNewExpertise] = React.useState("");
-  const [newSkill, setNewSkill] = React.useState("");
+
   const [newAccomplishment, setNewAccomplishment] = React.useState("");
 
   const handleInputChange = (
@@ -58,23 +48,6 @@ export default function FacilitatorEditProfile() {
     setFacilitator((prev) => ({
       ...prev,
       expertise: prev.expertise.filter((e) => e !== item),
-    }));
-  };
-
-  const handleAddSkill = () => {
-    if (newSkill && !facilitator.skills.includes(newSkill)) {
-      setFacilitator((prev) => ({
-        ...prev,
-        skills: [...prev.skills, newSkill],
-      }));
-      setNewSkill("");
-    }
-  };
-
-  const handleRemoveSkill = (item: string) => {
-    setFacilitator((prev) => ({
-      ...prev,
-      skills: prev.skills.filter((s) => s !== item),
     }));
   };
 
@@ -115,9 +88,9 @@ export default function FacilitatorEditProfile() {
             <CardTitle>Personal Information</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center space-x-4">
+            {/* <div className="flex items-center space-x-4">
               <Avatar className="w-24 h-24">
-                <AvatarImage src={facilitator.image} alt={facilitator.name} />
+                <AvatarImage src={facilitator.picture} alt={facilitator.name} />
                 <AvatarFallback>
                   {facilitator.name
                     .split(" ")
@@ -126,27 +99,8 @@ export default function FacilitatorEditProfile() {
                 </AvatarFallback>
               </Avatar>
               <Button>Change Photo</Button>
-            </div>
+            </div> */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={facilitator.name}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={facilitator.email}
-                  onChange={handleInputChange}
-                />
-              </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone</Label>
                 <Input
@@ -166,11 +120,21 @@ export default function FacilitatorEditProfile() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="website">Website</Label>
+                <Label htmlFor="meetingUrl">Calendly URL</Label>
                 <Input
-                  id="website"
-                  name="website"
-                  value={facilitator.website}
+                  id="meetingUrl"
+                  name="meetingUrl"
+                  type="meetingUrl"
+                  value={facilitator.meetingUrl}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="price">Rate Per Hour</Label>
+                <Input
+                  id="price"
+                  name="price"
+                  value={facilitator.price}
                   onChange={handleInputChange}
                 />
               </div>
@@ -215,39 +179,6 @@ export default function FacilitatorEditProfile() {
                 placeholder="Add new expertise"
               />
               <Button type="button" onClick={handleAddExpertise}>
-                Add
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Skills</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex flex-wrap gap-2">
-              {facilitator.skills.map((item, index) => (
-                <Badge
-                  key={index}
-                  variant="secondary"
-                  className="flex items-center gap-1"
-                >
-                  {item}
-                  <X
-                    className="h-3 w-3 cursor-pointer"
-                    onClick={() => handleRemoveSkill(item)}
-                  />
-                </Badge>
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <Input
-                value={newSkill}
-                onChange={(e) => setNewSkill(e.target.value)}
-                placeholder="Add new skill"
-              />
-              <Button type="button" onClick={handleAddSkill}>
                 Add
               </Button>
             </div>

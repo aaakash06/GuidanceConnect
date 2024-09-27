@@ -17,6 +17,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Progress } from "@/components/ui/progress";
 import { getUserByClerkId } from "@/db/actions.db";
 import { IUser } from "@/db/models.db";
+import Link from "next/link";
 export default async function FacilitatorProfile({
   params,
 }: {
@@ -90,6 +91,12 @@ export default async function FacilitatorProfile({
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
+      <div>
+        <Button>
+          <Link href={`/profile-facilitator/${clerkId}/edit`}>Edit</Link>
+        </Button>
+      </div>
+
       {/* Header Section */}
       <div className="mb-8 flex flex-col md:flex-row items-center md:items-start gap-6">
         <Avatar className="w-32 h-32">
