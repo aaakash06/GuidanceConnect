@@ -41,7 +41,6 @@ export default function Hero() {
   return (
     <div className="flex    flex-col gap-4  max-w-10xl h-[50vh] md:h-[75vh] size-screen mx-auto justify-center  ">
       <div className="relative z-10 hidden lg:block  ">
-
         <motion.img
           src="/imgs/chemistry.png"
           alt="Custom Image"
@@ -128,7 +127,6 @@ export default function Hero() {
 
           // style={{ width: "56px", height: "auto" }}
         />
-
       </div>
       <div className="absolute  inset-0 overflow-hidden pointer-events-none bg-gray-50">
         <div className="absolute inset-0 opacity-30">
@@ -167,6 +165,16 @@ export default function Hero() {
           Platform that helps students and guidance seekers connect with domain
           experts and seniors.
         </p>
+        <form id="landing-search" className="mt-10 flex items-center space-x-2">
+          <input
+            type="text"
+            placeholder="Search for guidance... (Physics, Career, etc.)"
+            className="px-4 py-2 border rounded-md w-full md:w-96"
+          />
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+            Search
+          </button>
+        </form>
         {/* <ContentSearch tracks={tracks} /> */}
       </motion.div>
       {/* <Spotlight
