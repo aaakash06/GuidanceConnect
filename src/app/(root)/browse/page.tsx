@@ -83,62 +83,6 @@ const facilitators = [
     education: "M.A. in Career Counseling, Columbia University",
     experience: "Expert",
   },
-  {
-    id: 2,
-    name: "John Smith",
-    image: "https://i.pravatar.cc/150?img=2",
-    bio: "Career counselor with 10+ years of experience in tech industry placement.",
-    skills: ["Career Counseling", "Resume Writing", "Interview Preparation"],
-    rating: 4.7,
-    reviews: 85,
-    hourlyRate: 60,
-    availability: "Available in 2 hours",
-    languages: ["English", "Spanish"],
-    education: "M.A. in Career Counseling, Columbia University",
-    experience: "Expert",
-  },
-  {
-    id: 2,
-    name: "John Smith",
-    image: "https://i.pravatar.cc/150?img=2",
-    bio: "Career counselor with 10+ years of experience in tech industry placement.",
-    skills: ["Career Counseling", "Resume Writing", "Interview Preparation"],
-    rating: 4.7,
-    reviews: 85,
-    hourlyRate: 60,
-    availability: "Available in 2 hours",
-    languages: ["English", "Spanish"],
-    education: "M.A. in Career Counseling, Columbia University",
-    experience: "Expert",
-  },
-  {
-    id: 2,
-    name: "John Smith",
-    image: "https://i.pravatar.cc/150?img=2",
-    bio: "Career counselor with 10+ years of experience in tech industry placement.",
-    skills: ["Career Counseling", "Resume Writing", "Interview Preparation"],
-    rating: 4.7,
-    reviews: 85,
-    hourlyRate: 60,
-    availability: "Available in 2 hours",
-    languages: ["English", "Spanish"],
-    education: "M.A. in Career Counseling, Columbia University",
-    experience: "Expert",
-  },
-  {
-    id: 3,
-    name: "Sarah Johnson",
-    image: "https://i.pravatar.cc/150?img=3",
-    bio: "Math tutor specializing in calculus and statistics for college students.",
-    skills: ["Calculus", "Statistics", "Linear Algebra"],
-    rating: 4.8,
-    reviews: 95,
-    hourlyRate: 50,
-    availability: "Available Tomorrow",
-    languages: ["English"],
-    education: "B.S. in Mathematics, MIT",
-    experience: "Intermediate",
-  },
   // Add more facilitators as needed
 ];
 
@@ -152,7 +96,9 @@ export default function StudentBrowsingPage() {
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
-          <h1 className="text-3xl font-bold uppercase tracking-wider font-light ml-4">Find a Facilitator</h1>
+          <h1 className="text-3xl font-bold uppercase tracking-wider font-light ml-4">
+            Find a Facilitator
+          </h1>
           <div className="flex items-center mt-4 w-full md:mt-0 md:w-auto">
             <div className="relative flex-grow mr-4">
               <Input
@@ -284,21 +230,30 @@ export default function StudentBrowsingPage() {
                     <p className="text-sm text-gray-600 mb-2 mt-4">
                       {facilitator.bio}
                     </p>
-                    <div className="flex flex-wrap items-center gap-2 mb-2 xl:h-16">
+                    <div className="flex flex-wrap items-center gap-2 mb-3 xl:h-16">
                       {facilitator.skills.map((skill, index) => (
                         <Badge key={index} variant="secondary">
                           {skill}
                         </Badge>
                       ))}
                     </div>
-                    <div className="flex items-center justify-between text-sm mt-4">
-                      <span className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1 text-green-500" />
-                        {facilitator.availability}
-                      </span>
-                      <span className="font-semibold">
-                        ${facilitator.hourlyRate}/hr
-                      </span>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div className="flex items-center">
+                        <Clock className="w-4 h-4 mr-2 text-blue-500" />
+                        <span>{facilitator.availability}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <DollarSign className="w-4 h-4 mr-2 text-green-500" />
+                        <span>${facilitator.hourlyRate}/hour</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Globe className="w-4 h-4 mr-2 text-purple-500" />
+                        <span>{facilitator.languages.join(", ")}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <GraduationCap className="w-4 h-4 mr-2 text-red-500" />
+                        <span>{facilitator.education.split(",")[0]}</span>
+                      </div>
                     </div>
                   </CardContent>
                   <CardFooter>

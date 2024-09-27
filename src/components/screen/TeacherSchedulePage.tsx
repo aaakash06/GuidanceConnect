@@ -1,5 +1,13 @@
 import React from "react";
-import { Calendar, Clock, Book, User, CheckCircle, Star } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  Book,
+  User,
+  CheckCircle,
+  Star,
+  ArrowRight,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -61,11 +69,15 @@ export default function TeacherSchedulePage() {
         </h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {upcomingSessions.map((session) => (
-            <Card key={session.id}>
-              <CardHeader>
+            <Card
+              key={session.id}
+              className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+            >
+              <CardHeader className="group relative overflow-hidden rounded-lg bg-white transition-all">
+                <div className="absolute -right-16 -top-16 h-32 w-32 rounded-full bg-blue-500 group-hover:bg-blue-600 transition-colors duration-300"></div>
                 <CardTitle className="flex items-center">
-                  <Calendar className="mr-2 h-5 w-5 text-blue-500" />
-                  {new Date(session.time).toLocaleDateString()}
+                  <User className="mr-2 h-4 w-4  text-blue-500" />
+                  {session.facilitator}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -77,13 +89,18 @@ export default function TeacherSchedulePage() {
                   })}
                 </p>
                 <p className="flex items-center text-sm text-gray-600 mb-2">
-                  <User className="mr-2 h-4 w-4" />
-                  {session.facilitator}
+                  <Calendar className="mr-2 h-5 w-5" />
+                  {new Date(session.time).toLocaleDateString()}
                 </p>
+
                 <p className="flex items-center text-sm text-gray-600">
                   <Book className="mr-2 h-4 w-4" />
                   {session.subject}
                 </p>
+
+                <div className="absolute bottom-4 right-4">
+                  <ArrowRight className="h-6 w-6 text-blue-500 group-hover:text-blue-600 transition-colors duration-300" />
+                </div>
               </CardContent>
             </Card>
           ))}

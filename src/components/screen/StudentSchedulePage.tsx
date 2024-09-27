@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, Clock, Book, User, CheckCircle, Star } from "lucide-react";
+import { Calendar, Clock, Book, User, CheckCircle, Star, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -84,6 +84,9 @@ export default function StudentSchedulePage() {
                   <Book className="mr-2 h-4 w-4" />
                   {session.subject}
                 </p>
+                <div className="absolute bottom-4 right-4">
+                  <ArrowRight className="h-6 w-6 text-blue-500 group-hover:text-blue-600 transition-colors duration-300" />
+                </div>
               </CardContent>
             </Card>
           ))}

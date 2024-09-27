@@ -21,7 +21,7 @@ import { IUser } from "@/db/models.db";
 
 
 
-export default async function FacilitatorProfile({
+export default  function FacilitatorProfile({
   params,
 }: {
   params: { id: string };
