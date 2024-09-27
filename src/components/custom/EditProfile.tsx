@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { IUser } from "@/db/models.db";
+import { updateUserInfo } from "@/db/actions.db";
 
 export default function FacilitatorEditProfile({ user }: { user: string }) {
   const User: IUser = JSON.parse(user);
@@ -215,7 +216,13 @@ export default function FacilitatorEditProfile({ user }: { user: string }) {
           </CardContent>
         </Card>
 
-        <Button type="submit" size="lg">
+        <Button
+          type="submit"
+          size="lg"
+          onClick={() => {
+            updateUserInfo(JSON.stringify(facilitator), User.clerkId);
+          }}
+        >
           Save Changes
         </Button>
       </form>

@@ -154,6 +154,23 @@ export const getAllFacilitators = async () => {
     // console.log(e);
   }
 };
+export const updateUserInfo = async (facilitator: string, clerkId: string) => {
+  const updatedFacilitator = JSON.parse(facilitator);
+  try {
+    await connectToDB();
+    const updatedUser = User.findOneAndUpdate(
+      { clerkId },
+      { updatedFacilitator },
+      { new: true }
+    );
+
+    console.log("user updated");
+  } catch (e) {
+    console.log("error; updateUserInfo");
+    return null;
+    // console.log(e);
+  }
+};
 
 export const getAllFacilitatorss = async (
   priceLow?: number,
