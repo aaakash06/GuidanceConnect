@@ -12,6 +12,7 @@ import {
   MapPin,
   Mail,
   Globe,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { getUserByClerkId } from "@/db/actions.db";
 import { IUser } from "@/db/models.db";
+
 const WebinarCard = ({ webinar, isPast }) => (
   <div className="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg">
     <div className="absolute -right-16 -top-16 h-32 w-32 rounded-full bg-blue-500 group-hover:bg-blue-600 transition-colors duration-300"></div>
@@ -56,7 +58,44 @@ const SkillBadge = ({ skill }) => (
   </Badge>
 );
 
-export default async function FacilitatorProfile({
+const ExpertiseBadge = ({ expertise }) => (
+  <div className="border-2 border-black rounded-full py-2 px-4 flex items-center justify-between group hover:shadow-lg transition-all duration-300 cursor-pointer">
+    <span>{expertise}</span>
+    <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+  </div>
+);
+
+const SkillBar = ({ skill, level }) => (
+  <div className="mb-4">
+    <div className="flex justify-between items-center mb-1">
+      <span className="text-sm font-medium text-gray-700">{skill}</span>
+      <span className="text-sm font-medium text-gray-500">{level}%</span>
+    </div>
+    <div className="w-full bg-gray-200 rounded-full h-2.5">
+      <div
+        className="bg-blue-500 h-2.5 rounded-full transition-all duration-500 ease-out"
+        style={{ width: `${level}%` }}
+      ></div>
+    </div>
+  </div>
+);
+
+const AccomplishmentCard = ({ accomplishment, icon }) => (
+  <Card className="hover:shadow-lg transition-all duration-300 group">
+    <CardContent className="p-4 flex items-start space-x-4">
+      <div className="bg-blue-500 p-3 rounded-full text-white group-hover:scale-110 transition-transform duration-300">
+        {icon}
+      </div>
+      <div>
+        <p className="text-gray-700 group-hover:text-gray-900 transition-colors duration-300">
+          {accomplishment}
+        </p>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+export default function FacilitatorProfile({
   params,
 }: {
   params: { id: string };
@@ -131,7 +170,7 @@ export default async function FacilitatorProfile({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16">
+      <div className="text-center place-content-center bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
           <Avatar className="w-40 h-40 border-4 border-white shadow-lg mb-6 md:mb-0 md:mr-8">
             <AvatarImage src={facilitator.image} alt={facilitator.name} />
@@ -151,11 +190,11 @@ export default async function FacilitatorProfile({
                 {facilitator.location}
               </div>
               <div className="flex items-center">
-                <Mail className="h-5 w-5 mr-2" />
+                <Mail className="h-5 w-5 mr-2 bg-[#5f59d2] px-0.5" />
                 {facilitator.email}
               </div>
               <div className="flex items-center">
-                <Globe className="h-5 w-5 mr-2" />
+                <Globe className="h-5 w-5 mr-2 bg-[##5e32ce42] px-0.5" />
                 {facilitator.website}
               </div>
             </div>
@@ -163,50 +202,61 @@ export default async function FacilitatorProfile({
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12 md:w-4/5">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Left Column */}
-          <div className="md:col-span-1">
+          <div className="md:col-span-1 space-y-8">
             {/* Expertise */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>Expertise</CardTitle>
+            <Card className="overflow-hidden">
+              <CardHeader className="bg-blue-500 text-white">
+                <CardTitle className="text-xl">Expertise</CardTitle>
               </CardHeader>
-              <CardContent>
-                {facilitator.expertise.map((exp, index) => (
-                  <Badge key={index} variant="secondary" className="mr-2 mb-2">
-                    {exp}
-                  </Badge>
-                ))}
+              <CardContent className="p-6">
+                <div className="space-y-3">
+                  {facilitator.expertise.map((exp, index) => (
+                    <ExpertiseBadge key={index} expertise={exp} />
+                  ))}
+                </div>
               </CardContent>
             </Card>
 
             {/* Skills */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>Skills</CardTitle>
+            <Card className="overflow-hidden">
+              <CardHeader className="bg-blue-500 text-white">
+                <CardTitle className="text-xl">Skills</CardTitle>
               </CardHeader>
-              <CardContent>
-                {facilitator.skills.map((skill, index) => (
-                  <SkillBadge key={index} skill={skill} />
-                ))}
+              <CardContent className="p-6">
+                <SkillBar skill="Python" level={90} />
+                <SkillBar skill="TensorFlow" level={85} />
+                <SkillBar skill="Data Analysis" level={95} />
+                <SkillBar skill="Research Methodology" level={80} />
               </CardContent>
             </Card>
 
             {/* Accomplishments */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Accomplishments</CardTitle>
+            <Card className="overflow-hidden">
+              <CardHeader className="bg-blue-500 text-white">
+                <CardTitle className="text-xl">Accomplishments</CardTitle>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {facilitator.accomplishments.map((accomplishment, index) => (
-                    <li key={index} className="flex items-start">
-                      <Award className="h-5 w-5 mr-2 text-yellow-500 mt-1 flex-shrink-0" />
-                      <span>{accomplishment}</span>
-                    </li>
-                  ))}
-                </ul>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <AccomplishmentCard
+                    accomplishment="Ph.D. in Computer Science from Stanford University"
+                    icon={<GraduationCap className="h-6 w-6" />}
+                  />
+                  <AccomplishmentCard
+                    accomplishment="Published 20+ research papers in top-tier conferences"
+                    icon={<BookOpen className="h-6 w-6" />}
+                  />
+                  <AccomplishmentCard
+                    accomplishment="Mentored 50+ students who secured positions in leading tech companies"
+                    icon={<Users className="h-6 w-6" />}
+                  />
+                  <AccomplishmentCard
+                    accomplishment="Certified AWS Machine Learning Specialist"
+                    icon={<Award className="h-6 w-6" />}
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>
