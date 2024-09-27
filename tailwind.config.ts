@@ -73,6 +73,7 @@ const config: Config = {
         inter: ["var(--font-inter)"],
         spaceGrotesk: ["var(--font-spaceGrotesk)"],
         poppins: ["var(--font-poppins)"],
+        dmSans: ["var(--font-dmSans)"],
       },
       borderRadius: {
         lg: "var(--radius)",

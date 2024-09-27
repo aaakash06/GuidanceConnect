@@ -10,7 +10,7 @@ export default async function Main() {
   }
 
   // const userRole = await getRoleByClerkId(userId);
-  const userRole = "facilitator"
+  const userRole = "student"
   // if (userRole == "null") {
   //   return <RolePage />;
   // }
