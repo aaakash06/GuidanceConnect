@@ -1,5 +1,13 @@
 import React from "react";
-import { Calendar, Clock, Book, User, CheckCircle, Star, ArrowRight } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  Book,
+  User,
+  CheckCircle,
+  Star,
+  ArrowRight,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -62,7 +70,8 @@ export default function StudentSchedulePage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {upcomingSessions.map((session) => (
             <Card key={session.id}>
-              <CardHeader>
+              <CardHeader className="group relative overflow-hidden rounded-lg bg-white transition-all">
+                <div className="absolute -right-16 -top-16 h-32 w-32 rounded-full bg-blue-500 group-hover:bg-blue-600 transition-colors duration-300"></div>
                 <CardTitle className="flex items-center">
                   <Calendar className="mr-2 h-5 w-5 text-blue-500" />
                   {new Date(session.time).toLocaleDateString()}
