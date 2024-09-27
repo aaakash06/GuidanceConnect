@@ -9,9 +9,10 @@ export default async function Main() {
     return <Home />;
   }
 
-  const userRole = await getRoleByClerkId(userId);
-  if (userRole == "null") {
-    return <RolePage />;
-  }
+  // const userRole = await getRoleByClerkId(userId);
+  const userRole = "facilitator"
+  // if (userRole == "null") {
+  //   return <RolePage />;
+  // }
   return <Home />;
 }
