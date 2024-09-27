@@ -2,6 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Video, Users, Calendar, Star } from "lucide-react";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+
 import Hero from "@/components/custom/Hero";
 
 export default function Home() {
@@ -164,6 +171,101 @@ export default function Home() {
                     </Button>
                   </form>
                 </div>
+              </div>
+            </div>
+          </section>
+          <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
+            <div className="container mx-auto px-4 md:px-6">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-black">
+                Frequently Asked Questions
+              </h2>
+              <div className="w-3/4 mx-auto">
+                {" "}
+                {/* Container with 75% width */}
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>
+                      What is GuidanceConnect?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      GuidanceConnect is a platform that connects individuals
+                      with mentors from various fields to help them achieve
+                      their personal and professional goals.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger>How can I sign up?</AccordionTrigger>
+                    <AccordionContent>
+                      You can sign up by clicking the "Get Started" button on
+                      our homepage and filling out the registration form.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger>
+                      Is there a fee for the service?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      GuidanceConnect offers both free and premium mentoring
+                      options. Please check our pricing page for more details.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-4">
+                    <AccordionTrigger>
+                      What kinds of guidance are available?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Our guidance ranges from high school subjects tutoring,
+                      competitive exam preparation, career counseling, and
+                      abroad studies to programming and beyond. There are no
+                      limits to the support we offer!
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-5">
+                    <AccordionTrigger>
+                      Who are the guidance providers or experts?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Our experts are individuals who have successfully
+                      navigated the entire process in their respective fields
+                      and have a wide range of achievements. We constantly
+                      recruit the best experts to ensure you receive top-notch
+                      guidance.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-6">
+                    <AccordionTrigger>
+                      How can I choose a mentor?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      You can browse through our list of available mentors,
+                      review their profiles, and choose one that aligns with
+                      your goals and needs. Each mentor's background and
+                      specialties are detailed to help you make an informed
+                      decision.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-7">
+                    <AccordionTrigger>
+                      Can I switch mentors if I'm not satisfied?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Absolutely! If you feel that your current mentor is not
+                      the right fit for you, you can request a change at any
+                      time. We want you to feel comfortable and supported in
+                      your learning journey.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-8">
+                    <AccordionTrigger>
+                      What if I have more questions?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      If you have any additional questions or need further
+                      assistance, feel free to reach out to our support team via
+                      the contact form on our website. We're here to help!
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </div>
             </div>
           </section>

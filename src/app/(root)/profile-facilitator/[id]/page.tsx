@@ -8,26 +8,68 @@ import {
   BookOpen,
   Briefcase,
   GraduationCap,
+  ArrowRight,
+  MapPin,
+  Mail,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar } from "@/components/ui/calendar";
 import { Progress } from "@/components/ui/progress";
 import { getUserByClerkId } from "@/db/actions.db";
 import { IUser } from "@/db/models.db";
+const WebinarCard = ({ webinar, isPast }) => (
+  <div className="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg">
+    <div className="absolute -right-16 -top-16 h-32 w-32 rounded-full bg-blue-500 group-hover:bg-blue-600 transition-colors duration-300"></div>
+    <div className="p-6">
+      <h3 className="text-xl font-bold mb-2 pr-8">{webinar.topic}</h3>
+      <div className="flex items-center text-sm text-gray-600 mb-2">
+        <CalendarIcon className="h-4 w-4 mr-2" />
+        {new Date(webinar.time).toLocaleDateString()}
+      </div>
+      <div className="flex items-center text-sm text-gray-600 mb-2">
+        <Clock className="h-4 w-4 mr-2" />
+        {new Date(webinar.time).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+      </div>
+      <div className="flex items-center text-sm text-gray-600 mb-4">
+        <Users className="h-4 w-4 mr-2" />
+        {webinar.students} {isPast ? "attended" : "registered"}
+      </div>
+      <Badge variant={isPast ? "secondary" : "default"} className="mt-2">
+        {isPast ? "Past" : "Upcoming"}
+      </Badge>
+    </div>
+    <div className="absolute bottom-4 right-4">
+      <ArrowRight className="h-6 w-6 text-blue-500 group-hover:text-blue-600 transition-colors duration-300" />
+    </div>
+  </div>
+);
+
+const SkillBadge = ({ skill }) => (
+  <Badge variant="outline" className="mr-2 mb-2">
+    {skill}
+  </Badge>
+);
+
 export default async function FacilitatorProfile({
   params,
 }: {
   params: { id: string };
 }) {
   const { id: clerkId } = params;
-  const user: IUser = await getUserByClerkId(clerkId);
+  // const user: IUser = await getUserByClerkId(clerkId);
   const facilitator = {
     name: "Dr. Emily Chen",
     image: "https://i.pravatar.cc/300?img=47",
     bio: "Experienced computer science professor with a passion for mentoring students in AI and machine learning.",
+    location: "San Francisco, CA",
+    email: "emily.chen@example.com",
+    website: "www.emilychen.com",
     expertise: [
       "Artificial Intelligence",
       "Machine Learning",
@@ -86,187 +128,174 @@ export default async function FacilitatorProfile({
     overallRating: 4.8,
   };
 
-  // const [date, setDate] = React.useState<Date | undefined>(new Date());
-
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <div className="mb-8 flex flex-col md:flex-row items-center md:items-start gap-6">
-        <Avatar className="w-32 h-32">
-          <AvatarImage src={user.picture} alt={facilitator.name} />
-          <AvatarFallback>
-            {user.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")}
-          </AvatarFallback>
-        </Avatar>
-        <div className="text-center md:text-left">
-          <h1 className="text-3xl font-bold mb-2 text-gray-800">{user.name}</h1>
-          <p className="text-gray-600 mb-4">{user.bio ?? facilitator.bio}</p>
-          <div className="flex flex-wrap justify-center md:justify-start gap-2">
-            {user.specializations.length > 0
-              ? user.specializations.map((tag, index) => (
-                  <Badge key={index} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))
-              : facilitator.expertise.map((tag, index) => (
-                  <Badge key={index} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))}
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
+          <Avatar className="w-40 h-40 border-4 border-white shadow-lg mb-6 md:mb-0 md:mr-8">
+            <AvatarImage src={facilitator.image} alt={facilitator.name} />
+            <AvatarFallback>
+              {facilitator.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")}
+            </AvatarFallback>
+          </Avatar>
+          <div className="text-center md:text-left">
+            <h1 className="text-4xl font-bold mb-2">{facilitator.name}</h1>
+            <p className="text-xl mb-4">{facilitator.bio}</p>
+            <div className="flex flex-wrap justify-center md:justify-start gap-4">
+              <div className="flex items-center">
+                <MapPin className="h-5 w-5 mr-2" />
+                {facilitator.location}
+              </div>
+              <div className="flex items-center">
+                <Mail className="h-5 w-5 mr-2" />
+                {facilitator.email}
+              </div>
+              <div className="flex items-center">
+                <Globe className="h-5 w-5 mr-2" />
+                {facilitator.website}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Skills and Expertise */}
-      {/* <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-          Skills and Expertise
-        </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {facilitator.skills.map((skill, index) => (
-            <Card key={index}>
-              <CardContent className="flex items-center p-4">
-                <BookOpen className="h-5 w-5 mr-2 text-blue-500" />
-                <span>{skill}</span>
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Left Column */}
+          <div className="md:col-span-1">
+            {/* Expertise */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Expertise</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {facilitator.expertise.map((exp, index) => (
+                  <Badge key={index} variant="secondary" className="mr-2 mb-2">
+                    {exp}
+                  </Badge>
+                ))}
               </CardContent>
             </Card>
-          ))}
-        </div>
-      </section> */}
 
-      {/* Accomplishments */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-          Accomplishments
-        </h2>
-        <ul className="space-y-2">
-          {facilitator.accomplishments.map((accomplishment, index) => (
-            <li key={index} className="flex items-start">
-              <Award className="h-5 w-5 mr-2 text-yellow-500 mt-1 flex-shrink-0" />
-              <span>{accomplishment}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+            {/* Skills */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Skills</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {facilitator.skills.map((skill, index) => (
+                  <SkillBadge key={index} skill={skill} />
+                ))}
+              </CardContent>
+            </Card>
 
-      {/* Availability Calendar */}
-      {/* <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-          Availability
-        </h2>
-        <div className="flex flex-col md:flex-row gap-4">
-          <Card className="flex-grow">
-            <CardContent className="p-4">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="rounded-md border"
-              />
-            </CardContent>
-          </Card>
-          <Card className="flex-grow">
-            <CardHeader>
-              <CardTitle>Book a Session</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4 text-gray-600">
-                Select a date and time to schedule your session with{" "}
-                {facilitator.name}.
-              </p>
-              <Button className="w-full">Book Now</Button>
-            </CardContent>
-          </Card>
-        </div>
-      </section> */}
+            {/* Accomplishments */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Accomplishments</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {facilitator.accomplishments.map((accomplishment, index) => (
+                    <li key={index} className="flex items-start">
+                      <Award className="h-5 w-5 mr-2 text-yellow-500 mt-1 flex-shrink-0" />
+                      <span>{accomplishment}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
 
-      {/* Webinars */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">Webinars</h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Upcoming Webinars</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {facilitator.upcomingWebinars.map((webinar) => (
-                <div key={webinar.id} className="mb-4 last:mb-0">
-                  <h3 className="font-semibold">{webinar.topic}</h3>
-                  <p className="text-sm text-gray-600 flex items-center">
-                    <Clock className="h-4 w-4 mr-1" />
-                    {new Date(webinar.time).toLocaleString()}
-                  </p>
-                  <p className="text-sm text-gray-600 flex items-center">
-                    <Users className="h-4 w-4 mr-1" />
-                    {webinar.students} students registered
-                  </p>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Past Webinars</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {facilitator.pastWebinars.map((webinar) => (
-                <div key={webinar.id} className="mb-4 last:mb-0">
-                  <h3 className="font-semibold">{webinar.topic}</h3>
-                  <p className="text-sm text-gray-600 flex items-center">
-                    <Clock className="h-4 w-4 mr-1" />
-                    {new Date(webinar.time).toLocaleString()}
-                  </p>
-                  <p className="text-sm text-gray-600 flex items-center">
-                    <Users className="h-4 w-4 mr-1" />
-                    {webinar.students} students attended
-                  </p>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Feedback and Ratings */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-          Feedback and Ratings
-        </h2>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              Overall Rating: {facilitator.overallRating}
-              <Star className="h-5 w-5 text-yellow-400 ml-2" />
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Progress value={facilitator.overallRating * 20} className="mb-4" />
-            {facilitator.reviews.map((review) => (
-              <div key={review.id} className="mb-4 last:mb-0">
-                <div className="flex items-center mb-1">
-                  <span className="font-semibold mr-2">{review.student}</span>
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${
-                          i < review.rating
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        }`}
+          {/* Right Column */}
+          <div className="md:col-span-2">
+            {/* Webinars */}
+            {/* Webinars */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+                Webinars
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-xl font-semibold mb-4">
+                    Upcoming Webinars
+                  </h3>
+                  <div className="space-y-4">
+                    {facilitator.upcomingWebinars.map((webinar) => (
+                      <WebinarCard
+                        key={webinar.id}
+                        webinar={webinar}
+                        isPast={false}
                       />
                     ))}
                   </div>
                 </div>
-                <p className="text-gray-600">{review.comment}</p>
+                <div>
+                  <h3 className="text-xl font-semibold mb-4">Past Webinars</h3>
+                  <div className="space-y-4">
+                    {facilitator.pastWebinars.map((webinar) => (
+                      <WebinarCard
+                        key={webinar.id}
+                        webinar={webinar}
+                        isPast={true}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
-            ))}
-          </CardContent>
-        </Card>
-      </section>
+            </section>
+
+            {/* Feedback and Ratings */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  Feedback and Ratings
+                  <span className="ml-2 text-2xl font-bold">
+                    {facilitator.overallRating}
+                  </span>
+                  <Star className="h-6 w-6 text-yellow-400 ml-1" />
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Progress
+                  value={facilitator.overallRating * 20}
+                  className="mb-6"
+                />
+                <div className="space-y-6">
+                  {facilitator.reviews.map((review) => (
+                    <Card key={review.id} className="bg-gray-50">
+                      <CardContent className="p-4">
+                        <div className="flex items-center mb-2">
+                          <span className="font-semibold mr-2">
+                            {review.student}
+                          </span>
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i < review.rating
+                                    ? "text-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-gray-700">{review.comment}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
