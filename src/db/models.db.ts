@@ -13,6 +13,7 @@ export interface IUser extends mongoose.Document {
   specializations: string[];
   ratings?: ObjectIdType[];
   rating?: Number;
+  meetingUrl?: string;
   // comments?: ObjectIdType[];
   joinAt: Date;
 }
@@ -66,6 +67,7 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     rating: Number,
     joinAt: { type: Date, default: Date.now },
+    meetingUrl: { type: String, default: "" },
   },
   { timestamps: true }
 );

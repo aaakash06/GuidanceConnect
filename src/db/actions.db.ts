@@ -120,3 +120,22 @@ export const getRoleByClerkId = async (clerkId: string) => {
     // console.log(e);
   }
 };
+
+export const getCalendlyByClerkId = async (clerkId: string) => {
+  try {
+    await connectToDB();
+    // console.log("getRole was called");
+    const user = await User.findOne({ clerkId });
+    if (!user) {
+      return null;
+    }
+    if (user.role != "facilitator") {
+      return null;
+    }
+    if (user.meetingUrl == "") return null;
+    return user.meetingUrl;
+  } catch (e) {
+    console.log("error; getRole");
+    // console.log(e);
+  }
+};
