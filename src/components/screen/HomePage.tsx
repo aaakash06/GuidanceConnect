@@ -25,7 +25,9 @@ export default function Home() {
                 <Card>
                   <CardContent className="flex flex-col items-center space-y-2 p-6">
                     <Video className="h-12 w-12 text-blue-600" />
-                    <h3 className="text-xl font-bold">Video Consultations</h3>
+                    <h3 className="text-xl text-center font-bold">
+                      Video Consultations
+                    </h3>
                     <p className="text-gray-600 text-center">
                       Connect face-to-face with mentors from around the world.
                     </p>
@@ -34,7 +36,9 @@ export default function Home() {
                 <Card>
                   <CardContent className="flex flex-col items-center space-y-2 p-6">
                     <Users className="h-12 w-12 text-blue-600" />
-                    <h3 className="text-xl font-bold">Expert Mentors</h3>
+                    <h3 className="text-xl text-center font-bold">
+                      Expert Mentors
+                    </h3>
                     <p className="text-gray-600 text-center">
                       Access a diverse pool of experienced professionals and
                       seniors.
@@ -44,7 +48,9 @@ export default function Home() {
                 <Card>
                   <CardContent className="flex flex-col items-center space-y-2 p-6">
                     <Calendar className="h-12 w-12 text-blue-600" />
-                    <h3 className="text-xl font-bold">Flexible Scheduling</h3>
+                    <h3 className="text-xl text-center font-bold">
+                      Flexible Scheduling
+                    </h3>
                     <p className="text-gray-600 text-center">
                       Book sessions at times that suit your schedule.
                     </p>
@@ -58,12 +64,12 @@ export default function Home() {
             className="w-full flexx py-12 md:py-24 lg:py-32 bg-gray-100"
             id="how-it-works"
           >
-            <div className="container  px-4 md:px-6">
+            <div className="container px-4 md:px-6 lg:px-40">
               <h2 className="text-3xl text-black font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
                 How It Works
               </h2>
               <div className="grid gap-6 lg:grid-cols-3">
-                <div className="flex flex-col items-center space-y-2 border-2 border-gray-200 rounded-lg p-6 bg-white">
+                <div className="flex flex-col items-center space-y-3 border-2 border-gray-200 rounded-2xl p-6 bg-white">
                   <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold">
                     1
                   </div>
@@ -72,7 +78,7 @@ export default function Home() {
                     Create your account and tell us about your goals.
                   </p>
                 </div>
-                <div className="flex flex-col items-center space-y-2 border-2 border-gray-200 rounded-lg p-6 bg-white">
+                <div className="flex flex-col items-center space-y-3 border-2 border-gray-200 rounded-2xl p-6 bg-white">
                   <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold">
                     2
                   </div>
@@ -83,7 +89,7 @@ export default function Home() {
                     We'll connect you with the best mentors for your needs.
                   </p>
                 </div>
-                <div className="flex flex-col items-center space-y-2 border-2 border-gray-200 rounded-lg p-6 bg-white">
+                <div className="flex flex-col items-center space-y-3 border-2 border-gray-200 rounded-2xl p-6 bg-white">
                   <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold">
                     3
                   </div>
