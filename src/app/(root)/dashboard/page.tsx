@@ -17,6 +17,8 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
+  AreaChart,
+  Area,
 } from "recharts";
 import {
   LayoutDashboard,
@@ -29,9 +31,13 @@ import {
   Users,
   Star,
   TrendingUp,
+  ChevronRight,
+  Sun,
+  Moon,
+  Plus,
 } from "lucide-react";
 
-// Mock data for charts
+// Mock data for charts (unchanged)
 const sessionData = [
   { month: "Jan", sessions: 20 },
   { month: "Feb", sessions: 25 },
@@ -52,7 +58,7 @@ const earningsData = [
 
 export default function FacilitatorDashboard() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
-  const [sidebarWidth, setSidebarWidth] = useState(256);
+  const [sidebarWidth, setSidebarWidth] = useState(300);
   const [isDragging, setIsDragging] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 0
@@ -78,14 +84,14 @@ export default function FacilitatorDashboard() {
   }, [windowWidth]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default selection behavior
+    e.preventDefault();
     setIsDragging(true);
-    document.body.style.userSelect = "none"; // Disable text selection
+    document.body.style.userSelect = "none";
   }, []);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-    document.body.style.userSelect = ""; // Re-enable text selection
+    document.body.style.userSelect = "";
   }, []);
 
   const handleMouseMove = useCallback(
@@ -112,109 +118,129 @@ export default function FacilitatorDashboard() {
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
-    <div className="flex h-screen bg-gray-100" onMouseMove={handleMouseMove}>
+    <div className="flex h-screen bg-gray-50" onMouseMove={handleMouseMove}>
       {/* Main Content */}
       <main
         className="flex-1 overflow-y-auto"
         style={{ width: `calc(100% - ${sidebarWidth}px)` }}
       >
         <div className="container mx-auto px-6 py-8">
-          <h1 className="text-3xl font-semibold text-gray-800">Dashboard</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-8">Dashboard</h1>
 
           {/* Overview Panel */}
-          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Card className="bg-gradient-to-br from-gray-900 to-gray-600 text-white overflow-hidden relative">
+              <CardHeader className="flex flex-row items-center justify-between pb-2 z-10 relative">
+                <CardTitle className="text-lg font-medium">
                   Total Sessions
                 </CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+                <Users className="h-6 w-6" />
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">245</div>
-                <p className="text-xs text-muted-foreground">
-                  <span className="text-green-500">+20%</span> from last month
+              <CardContent className="z-10 relative">
+                <div className="text-4xl font-bold">245</div>
+                <p className="text-sm mt-2">
+                  <span className="bg-green-400 text-green-800 px-1 rounded">
+                    +20%
+                  </span>{" "}
+                  from last month
                 </p>
               </CardContent>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600 opacity-20"></div>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+            <Card className="bg-gradient-to-br from-gray-900 to-gray-600 text-white overflow-hidden relative">
+              <CardHeader className="flex flex-row items-center justify-between pb-2 z-10 relative">
+                <CardTitle className="text-lg font-medium">
                   Current Earnings
                 </CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                <DollarSign className="h-6 w-6" />
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">$12,450</div>
-                <p className="text-xs text-muted-foreground">
-                  <span className="text-green-500">+15%</span> from last month
+              <CardContent className="z-10 relative">
+                <div className="text-4xl font-bold">$12,450</div>
+                <p className="text-sm mt-2">
+                  <span className="bg-green-400 text-green-800 px-1 rounded">
+                    +15%
+                  </span>{" "}
+                  from last month
                 </p>
               </CardContent>
+              <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600 opacity-20"></div>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+            <Card className="bg-gradient-to-br from-gray-900 to-gray-600 text-white overflow-hidden relative">
+              <CardHeader className="flex flex-row items-center justify-between pb-2 z-10 relative">
+                <CardTitle className="text-lg font-medium">
                   Average Rating
                 </CardTitle>
-                <Star className="h-4 w-4 text-muted-foreground" />
+                <Star className="h-6 w-6" />
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">4.8</div>
-                <p className="text-xs text-muted-foreground">
-                  Based on 180 reviews
-                </p>
+              <CardContent className="z-10 relative">
+                <div className="text-4xl font-bold">4.8</div>
+                <p className="text-sm mt-2">Based on 180 reviews</p>
               </CardContent>
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-yellow-600 opacity-20"></div>
             </Card>
           </div>
 
           {/* Calendar and Upcoming Sessions */}
-          <div className="mt-8 flex flex-col lg:flex-row xl:space-x-4 gap-4 xl:gap-0">
-            <Card className="w-auto lg:w-fit xl:w-1/3">
+          <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6 mb-8">
+            <Card className="w-full lg:w-1/3">
               <CardHeader>
-                <CardTitle>Calendar</CardTitle>
+                <CardTitle className="text-xl font-semibold">
+                  Calendar
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="max-w-[250px] w-full">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    className="rounded-md border"
-                  />
-                </div>
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  className="rounded-md border"
+                />
               </CardContent>
             </Card>
-            <Card className="flex-1 xl:w-2/3">
+            <Card className="w-full lg:w-2/3">
               <CardHeader>
-                <CardTitle>Upcoming Sessions</CardTitle>
+                <CardTitle className="text-xl font-semibold">
+                  Upcoming Sessions
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <ScrollArea className="h-[300px]">
+                <ScrollArea className="h-[300px] pr-4">
                   {[...Array(5)].map((_, i) => (
                     <div
                       key={i}
-                      className="mb-4 flex items-center justify-between last:mb-0"
+                      className="mb-4 p-4 bg-gradient-to-r from-gray-50 to-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 transform hover:-translate-y-1"
                     >
-                      <div className="flex items-center space-x-4">
-                        <Avatar>
-                          <AvatarImage
-                            src={`https://i.pravatar.cc/32?img=${i}`}
-                          />
-                          <AvatarFallback>ST</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="text-sm font-medium">Student {i + 1}</p>
-                          <p className="text-xs text-gray-500">Mathematics</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <Avatar className="h-12 w-12 border-2 border-blue-500">
+                            <AvatarImage
+                              src={`https://i.pravatar.cc/48?img=${i}`}
+                            />
+                            <AvatarFallback>ST</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-semibold text-gray-800">
+                              Student {i + 1}
+                            </p>
+                            <p className="text-sm text-gray-500">Mathematics</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge variant="outline">
-                          <Clock className="mr-1 h-3 w-3" />
-                          2:00 PM
-                        </Badge>
-                        <Button variant="ghost" size="sm">
-                          View
-                        </Button>
+                        <div className="flex flex-col items-end space-y-2">
+                          <Badge
+                            variant="secondary"
+                            className="bg-blue-100 text-blue-800"
+                          >
+                            <Clock className="mr-1 h-3 w-3" />
+                            2:00 PM
+                          </Badge>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                          >
+                            View Details
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -224,29 +250,65 @@ export default function FacilitatorDashboard() {
           </div>
 
           {/* Analytics Section */}
-          <div className="mt-8">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-              Analytics
-            </h2>
-            <Tabs defaultValue="sessions">
-              <TabsList>
-                <TabsTrigger value="sessions">Sessions</TabsTrigger>
-                <TabsTrigger value="earnings">Earnings</TabsTrigger>
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Analytics</h2>
+            <Tabs defaultValue="sessions" className="space-y-4">
+              <TabsList className="bg-white p-1 rounded-lg shadow-sm">
+                <TabsTrigger
+                  value="sessions"
+                  className="data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+                >
+                  Sessions
+                </TabsTrigger>
+                <TabsTrigger
+                  value="earnings"
+                  className="data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+                >
+                  Earnings
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="sessions">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Session Trends</CardTitle>
+                    <CardTitle className="text-xl font-semibold">
+                      Session Trends
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ResponsiveContainer width="100%" height={300}>
-                      <BarChart data={sessionData}>
+                      <AreaChart data={sessionData}>
+                        <defs>
+                          <linearGradient
+                            id="sessionGradient"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#8884d8"
+                              stopOpacity={0.8}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#8884d8"
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                        </defs>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" />
                         <YAxis />
                         <Tooltip />
-                        <Bar dataKey="sessions" fill="#8884d8" />
-                      </BarChart>
+                        <Area
+                          type="monotone"
+                          dataKey="sessions"
+                          stroke="#8884d8"
+                          fillOpacity={1}
+                          fill="url(#sessionGradient)"
+                        />
+                      </AreaChart>
                     </ResponsiveContainer>
                   </CardContent>
                 </Card>
@@ -254,7 +316,9 @@ export default function FacilitatorDashboard() {
               <TabsContent value="earnings">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Earnings Over Time</CardTitle>
+                    <CardTitle className="text-xl font-semibold">
+                      Earnings Over Time
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ResponsiveContainer width="100%" height={300}>
@@ -266,7 +330,9 @@ export default function FacilitatorDashboard() {
                         <Line
                           type="monotone"
                           dataKey="earnings"
-                          stroke="#8884d8"
+                          stroke="#82ca9d"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
                         />
                       </LineChart>
                     </ResponsiveContainer>
@@ -282,49 +348,111 @@ export default function FacilitatorDashboard() {
       <div
         className="w-1 bg-gray-200 cursor-ew-resize hover:bg-gray-300 transition-colors"
         onMouseDown={handleMouseDown}
-        style={{ touchAction: "none" }} // Prevents scrolling on touch devices
+        style={{ touchAction: "none" }}
       />
 
       {/* Right Sidebar */}
       <aside
-        className="bg-white max-sm:hidden shadow-md overflow-hidden"
+        className="bg-white shadow-xl overflow-hidden"
         style={{
           width: `${sidebarWidth}px`,
           transition: isDragging ? "none" : "width 0.3s ease",
         }}
       >
-        <div className="p-4">
-          <h3 className="font-semibold text-gray-800">Notifications</h3>
-          <ScrollArea className="h-[300px] mt-2">
+        <div className="p-6">
+          <h3 className="font-bold text-xl text-gray-800 mb-4">
+            Notifications
+          </h3>
+          <ScrollArea className="h-[400px]">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="flex items-start space-x-2 mb-4">
-                <Bell className="h-5 w-5 text-blue-500 mt-1" />
-                <div>
-                  <p className="text-sm font-medium">New session request</p>
-                  <p className="text-xs text-gray-500">From Student {i + 1}</p>
+              <div
+                key={i}
+                className="mb-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              >
+                <div className="flex items-start space-x-3">
+                  <Bell className="h-5 w-5 text-blue-500 mt-1" />
+                  <div>
+                    <p className="font-medium text-gray-800">
+                      New session request
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      From Student {i + 1}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
+                  </div>
                 </div>
               </div>
             ))}
           </ScrollArea>
         </div>
-        <div className="p-4 border-t">
-          <h3 className="font-semibold text-gray-800 mb-2">
+        <div className="p-6 border-t border-gray-200">
+          <h3 className="font-bold text-xl text-gray-800 mb-4">
             Current Availability
           </h3>
-          <p className="text-sm text-gray-600 mb-2">Mon-Fri: 9AM - 5PM</p>
-          <Button size="sm">Update Time Slots</Button>
+          <div className="space-y-4">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-semibold text-gray-700">Weekdays</span>
+                <Badge variant="outline" className="text-gray-600">
+                  <Clock className="h-3 w-3 mr-1" />
+                  40 hours/week
+                </Badge>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-blue-500 rounded-full"
+                    style={{ width: "80%" }}
+                  ></div>
+                </div>
+                <span className="text-sm font-medium text-gray-600">
+                  9:00 AM - 5:00 PM
+                </span>
+              </div>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-semibold text-gray-700">Weekends</span>
+                <Badge variant="outline" className="text-gray-600">
+                  <Clock className="h-3 w-3 mr-1" />8 hours/week
+                </Badge>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-green-500 rounded-full"
+                    style={{ width: "40%" }}
+                  ></div>
+                </div>
+                <span className="text-sm font-medium text-gray-600">
+                  10:00 AM - 2:00 PM
+                </span>
+              </div>
+            </div>
+          </div>
+          <Button className="w-full mt-4 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300">
+            <Plus className="h-4 w-4 mr-2" /> Add Time Slot
+          </Button>
         </div>
-        <div className="p-4 border-t">
-          <h3 className="font-semibold text-gray-800 mb-2">Quick Links</h3>
+        <div className="p-6 border-t border-gray-200">
+          <h3 className="font-bold text-xl text-gray-800 mb-4">Quick Links</h3>
           <ul className="space-y-2">
             <li>
-              <a href="#" className="text-sm text-blue-600 hover:underline">
-                View Earnings Report
+              <a
+                href="#"
+                className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
+              >
+                <span>View Earnings Report</span>
+                <ChevronRight className="h-4 w-4 ml-1" />
               </a>
             </li>
             <li>
-              <a href="#" className="text-sm text-blue-600 hover:underline">
-                Performance Analytics
+              <a
+                href="#"
+                className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
+              >
+                <span>Performance Analytics</span>
+                <ChevronRight className="h-4 w-4 ml-1" />
               </a>
             </li>
           </ul>
