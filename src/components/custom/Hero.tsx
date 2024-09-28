@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { searchGem } from "@/db/actions.db";
 // import { ContentSearch } from "../components/ContentSearch";
 import { motion } from "framer-motion";
 import { Spotlight } from "../ui/spotlight";
@@ -185,7 +186,7 @@ export default function Hero() {
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
             onClick={async () => {
               setSearching(true);
-              // const facilitators = await semanticSearch(userQuery);
+              searchGem(userQuery);
               setSearching(false);
             }}
           >

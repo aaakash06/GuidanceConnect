@@ -12,17 +12,69 @@ interface CreateUserClerkType {
   picture: string;
 }
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY!);
 
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 export async function redirectTo(path: string) {
   redirect(path);
 }
 
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash-8b-exp-0924",
+  systemInstruction:
+    "You will be given a prompt by a student who is seeking a guidance provider or a facilitator in a specific field. You have to return a python list of 4 one word specializations that the guidance provider may have. Only choose the specializations from the list below and match the capitalization too. ['NEB', 'biology', 'chemistry', 'mathematics', 'stock market', 'Fintech', 'foreign exchange', 'physics', 'CEE', 'Cybersec', 'Programming', 'Artificial Intelligence', 'DSA', 'tech interviews', 'IELTS', 'TOEFL', 'SAT', 'Foreign study']",
+});
+
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 40,
+  maxOutputTokens: 8192,
+  responseMimeType: "text/plain",
+};
+
+export async function searchGem(text: string) {
+  const chatSession = model.startChat({
+    generationConfig,
+    // safetySettings: Adjust safety settings
+    // See https://ai.google.dev/gemini-api/docs/safety-settings
+    history: [
+      {
+        role: "user",
+        parts: [
+          {
+            text: "I want to connect with a facilitator specialized in grade 11 physics",
+          },
+        ],
+      },
+      {
+        role: "model",
+        parts: [{ text: "['Physics', 'Mechanics', 'NEB', 'Conceptual ']" }],
+      },
+      {
+        role: "user",
+        parts: [{ text: "I want to know a SAT tutor" }],
+      },
+      {
+        role: "model",
+        parts: [{ text: "['SAT', 'IELTS', 'foreign exchange', 'TOEFL']" }],
+      },
+    ],
+  });
+
+  const result = await chatSession.sendMessage(text);
+  console.log(result.response.text());
+  // alert(result.response.text());
+}
+
 export async function createUserByClerk(user: CreateUserClerkType) {
   try {
+    await search();
     await connectToDB();
     const newUser = {
       ...user,
