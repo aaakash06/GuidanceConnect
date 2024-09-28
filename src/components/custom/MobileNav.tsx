@@ -20,7 +20,7 @@ import { useState } from "react";
 const menuItemsS = [
   { icon: BadgePlus, label: "Browse", href: "/browse" },
   { icon: CalendarCheck, label: "Upcomings", href: "/schedule" },
-  { icon: AlignCenterHorizontal, label: "Resources", href: "/" },
+  // { icon: AlignCenterHorizontal, label: "Resources", href: "/" },
 ];
 
 const menuItemsOut = [

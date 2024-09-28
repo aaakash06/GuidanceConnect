@@ -9,7 +9,6 @@ import { useRole } from "@/context/RoleProvider";
 const menuItemsS = [
   { label: "Browse", href: "/browse" },
   { label: "Upcomings", href: "/schedule" },
-  { label: "Resources", href: "/" },
 ];
 
 const Header = () => {
@@ -129,7 +128,7 @@ const Header = () => {
         </SignedOut>
         <SignedIn>
           <div className="max-xl:absolute right-0 xl:flex-1 text-right lg:px-5 top-0">
-            <div className="absolute right-2 top-0 w-9 h-9 rounded-full bg-blue-300 flex items-center justify-center">
+            <div className="absolute right-2 top-0 w-9 h-9 rounded-full  flex items-center justify-center">
               <UserButton />
             </div>
           </div>
