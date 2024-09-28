@@ -36,7 +36,7 @@ import {
 } from "lucide-react";
 import BrowseSideBar from "@/components/custom/browse/BrowseSideBar";
 import BrowseSearch from "@/components/custom/browse/BrowseSearch";
-import { getAllFacilitators } from "@/db/actions.db";
+import { getAllFacilitators, getAllFacilitatorss } from "@/db/actions.db";
 import { IUser } from "@/db/models.db";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import BrowseHeader from "@/components/custom/browse/BrowseHeader";
@@ -47,7 +47,9 @@ export default async function StudentBrowsingPage({
 }: {
   searchParams: { q: string; filter?: string; page: string };
 }) {
-  const facilitators: null | IUser[] = await getAllFacilitators();
+  const facilitators: undefined | IUser[] = await getAllFacilitatorss(
+    searchParams.q
+  );
   if (!facilitators) return <div>no facilitators to show</div>;
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 to-[rgba(52, 108, 228, 0.1)]">
