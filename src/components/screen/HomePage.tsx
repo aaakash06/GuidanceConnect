@@ -206,10 +206,10 @@ export default function Home() {
           </section>
 
           <section
-            className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-blue-100 to-purple-100"
+            className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-blue-100 to-purple-100 flexx"
             id="how-it-works"
           >
-            <div className="container px-4 md:px-6 lg:px-40">
+            <div className="container px-4 md:px-6 lg:px-40 ">
               <motion.h2
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -218,7 +218,7 @@ export default function Home() {
               >
                 How It Works
               </motion.h2>
-              <div className="grid gap-6 lg:grid-cols-3">
+              <div className="grid gap-6 lg:grid-cols-3 ">
                 <StepCard
                   number={1}
                   title="Sign Up"
@@ -239,7 +239,7 @@ export default function Home() {
           </section>
 
           <section
-            className="w-full hidden py-12 md:py-24 lg:py-32 bg-white"
+            className="w-full hidden py-12 md:py-24 lg:py-32 bg-white "
             id="testimonials"
           >
             <div className="container px-4 md:px-6">
@@ -272,7 +272,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="w-full py-16 md:py-24 lg:py-32 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
+          <section className="w-full py-16 md:py-24 lg:py-32 bg-gradient-to-br from-blue-600 flexx to-purple-700 text-white">
             <div className="container px-4 md:px-6">
               <div className="flex flex-col items-center space-y-8 text-center">
                 <motion.div
@@ -322,7 +322,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="w-full py-16 md:py-24 lg:py-32 bg-gradient-to-br from-blue-50 to-purple-50">
+          <section className="w-full py-16 md:py-24 lg:py-32 bg-gradient-to-br from-blue-50 flexx to-purple-50">
             <div className="container mx-auto px-4 md:px-6">
               <motion.h2
                 initial={{ opacity: 0, y: -50 }}
