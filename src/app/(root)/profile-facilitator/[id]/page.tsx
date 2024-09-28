@@ -8,272 +8,311 @@ import {
   BookOpen,
   Briefcase,
   GraduationCap,
+  ArrowRight,
+  MapPin,
+  Mail,
+  Globe,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar } from "@/components/ui/calendar";
 import { Progress } from "@/components/ui/progress";
 import { getUserByClerkId } from "@/db/actions.db";
 import { IUser } from "@/db/models.db";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+
+const mockAccomplishments = [
+  "Ph.D. in Computer Science from Stanford University",
+  "Published 20+ research papers in top-tier conferences",
+  "Mentored 50+ students who secured positions in leading tech companies",
+  "Certified AWS Machine Learning Specialist",
+];
+
+const upcomingWebinars = [
+  {
+    id: 1,
+    topic: "Introduction to Neural Networks",
+    time: "2023-09-30T15:00:00",
+    students: 75,
+  },
+  {
+    id: 2,
+    topic: "Career Paths in AI",
+    time: "2023-10-05T14:00:00",
+    students: 100,
+  },
+];
+
+const pastWebinars = [
+  {
+    id: 3,
+    topic: "Python for Machine Learning",
+    time: "2023-09-15T16:00:00",
+    students: 120,
+  },
+  {
+    id: 4,
+    topic: "Preparing for Tech Interviews",
+    time: "2023-09-01T15:30:00",
+    students: 90,
+  },
+];
+
+const WebinarCard = ({
+  webinar,
+  isPast,
+}: {
+  webinar: {
+    id: number;
+    topic: string;
+    time: string;
+    students: number;
+  };
+  isPast: boolean;
+}) => (
+  <div className="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all h-full hover:shadow-lg">
+    <div className="absolute -right-16 -top-16 h-32 w-32 rounded-full bg-blue-500 group-hover:bg-blue-600 transition-colors duration-300"></div>
+    <div className="p-6">
+      <h3 className="text-xl font-bold mb-2 pr-8">{webinar.topic}</h3>
+      <div className="flex items-center text-sm text-gray-600 mb-2">
+        <CalendarIcon className="h-4 w-4 mr-2" />
+        {new Date(webinar.time).toLocaleDateString()}
+      </div>
+      <div className="flex items-center text-sm text-gray-600 mb-2">
+        <Clock className="h-4 w-4 mr-2" />
+        {new Date(webinar.time).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+      </div>
+      <div className="flex items-center text-sm text-gray-600 mb-4">
+        <Users className="h-4 w-4 mr-2" />
+        {webinar.students} {isPast ? "attended" : "registered"}
+      </div>
+      <Badge variant={isPast ? "secondary" : "default"} className="mt-2">
+        {isPast ? "Past" : "Upcoming"}
+      </Badge>
+    </div>
+    <div className="absolute bottom-4 right-4">
+      <ArrowRight className="h-6 w-6 text-blue-500 group-hover:text-blue-600 transition-colors duration-300" />
+    </div>
+  </div>
+);
+
+const ExpertiseBadge = ({ expertise }: { expertise: string }) => (
+  <div className="border-2 border-black rounded-full py-2 px-4 flex items-center justify-between group hover:shadow-lg transition-all duration-300 cursor-pointer">
+    <span>{expertise}</span>
+    <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+  </div>
+);
+
+const AccomplishmentCard = ({
+  accomplishment,
+  icon,
+}: {
+  accomplishment: string;
+  icon: any;
+}) => (
+  <Card className="hover:shadow-lg transition-all duration-300 group">
+    <CardContent className="p-4 flex items-start space-x-4">
+      <div className="bg-blue-500 p-3 rounded-full text-white group-hover:scale-110 transition-transform duration-300">
+        {icon}
+      </div>
+      <div>
+        <p className="text-gray-700 group-hover:text-gray-900 transition-colors duration-300">
+          {accomplishment}
+        </p>
+      </div>
+    </CardContent>
+  </Card>
+);
+
 export default async function FacilitatorProfile({
   params,
 }: {
   params: { id: string };
 }) {
   const { id: clerkId } = params;
-  const user: IUser = await getUserByClerkId(clerkId);
-  const facilitator = {
-    name: "Dr. Emily Chen",
-    image: "https://i.pravatar.cc/300?img=47",
-    bio: "Experienced computer science professor with a passion for mentoring students in AI and machine learning.",
-    expertise: [
-      "Artificial Intelligence",
-      "Machine Learning",
-      "Computer Science",
-      "Career Guidance",
-    ],
-    skills: ["Python", "TensorFlow", "Data Analysis", "Research Methodology"],
-    accomplishments: [
-      "Ph.D. in Computer Science from Stanford University",
-      "Published 20+ research papers in top-tier conferences",
-      "Mentored 50+ students who secured positions in leading tech companies",
-      "Certified AWS Machine Learning Specialist",
-    ],
-    upcomingWebinars: [
-      {
-        id: 1,
-        topic: "Introduction to Neural Networks",
-        time: "2023-09-30T15:00:00",
-        students: 75,
-      },
-      {
-        id: 2,
-        topic: "Career Paths in AI",
-        time: "2023-10-05T14:00:00",
-        students: 100,
-      },
-    ],
-    pastWebinars: [
-      {
-        id: 3,
-        topic: "Python for Machine Learning",
-        time: "2023-09-15T16:00:00",
-        students: 120,
-      },
-      {
-        id: 4,
-        topic: "Preparing for Tech Interviews",
-        time: "2023-09-01T15:30:00",
-        students: 90,
-      },
-    ],
-    reviews: [
-      {
-        id: 1,
-        student: "Alex M.",
-        rating: 5,
-        comment: "Dr. Chen's guidance was invaluable for my ML project!",
-      },
-      {
-        id: 2,
-        student: "Sarah L.",
-        rating: 4,
-        comment: "Great insights into the AI industry. Very helpful!",
-      },
-    ],
-    overallRating: 4.8,
-  };
-
-  // const [date, setDate] = React.useState<Date | undefined>(new Date());
-
+  const facilitator: IUser = await getUserByClerkId(clerkId);
+  const { userId } = auth();
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div>
-        <Button>
-          <Link href={`/profile-facilitator/${clerkId}/edit`}>Edit</Link>
-        </Button>
-      </div>
-
+    <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <div className="mb-8 flex flex-col md:flex-row items-center md:items-start gap-6">
-        <Avatar className="w-32 h-32">
-          <AvatarImage src={user.picture} alt={facilitator.name} />
-          <AvatarFallback>
-            {user.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")}
-          </AvatarFallback>
-        </Avatar>
-        <div className="text-center md:text-left">
-          <h1 className="text-3xl font-bold mb-2 text-gray-800">{user.name}</h1>
-          <p className="text-gray-600 mb-4">{user.bio ?? facilitator.bio}</p>
-          <div className="flex flex-wrap justify-center md:justify-start gap-2">
-            {user.specializations.length > 0
-              ? user.specializations.map((tag, index) => (
-                  <Badge key={index} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))
-              : facilitator.expertise.map((tag, index) => (
-                  <Badge key={index} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))}
+      <div className="text-center place-content-center bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
+          <Avatar className="w-40 h-40 border-4 border-white shadow-lg mb-6 md:mb-0 md:mr-8">
+            <AvatarImage src={facilitator.picture} alt={facilitator.name} />
+            <AvatarFallback>
+              {facilitator.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")}
+            </AvatarFallback>
+          </Avatar>
+          <div className="text-center md:text-left">
+            <h1 className="text-4xl font-bold mb-2">{facilitator.name}</h1>
+            <p className="text-xl mb-4">{facilitator.bio}</p>
+            <div className="flex flex-wrap justify-center md:justify-start gap-4">
+              {/* <div className="flex items-center">
+                <MapPin className="h-5 w-5 mr-2" />
+                {facilitator.location}
+              </div> */}
+              <div className="flex items-center">
+                <Mail className="h-5 w-5 mr-2 bg-[#5f59d2] px-0.5" />
+                {facilitator.email}
+              </div>
+              {/* <div className="flex items-center">
+                <Globe className="h-5 w-5 mr-2 bg-[##5e32ce42] px-0.5" />
+                {facilitator.website}
+              </div> */}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Skills and Expertise */}
-      {/* <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-          Skills and Expertise
-        </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {facilitator.skills.map((skill, index) => (
-            <Card key={index}>
-              <CardContent className="flex items-center p-4">
-                <BookOpen className="h-5 w-5 mr-2 text-blue-500" />
-                <span>{skill}</span>
+      <div className="container mx-auto px-4 py-12 md:w-4/5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Left Column */}
+          <div className="md:col-span-1 space-y-8">
+            {userId == clerkId ? (
+              <div className="flexx">
+                <Link
+                  className=" w-[90%]"
+                  href={`/profile-facilitator/${clerkId}/edit`}
+                >
+                  <Button className="w-[90%] "> Edit</Button>
+                </Link>
+              </div>
+            ) : (
+              <div className="flexx">
+                <Link className=" w-[90%]" href={`/book/${clerkId}`}>
+                  <Button className="w-[90%] ">Book Now</Button>
+                </Link>
+              </div>
+            )}
+
+            {/* Expertise */}
+            <Card className="overflow-hidden">
+              <CardHeader className="bg-blue-500 text-white">
+                <CardTitle className="text-xl">Expertise</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-3">
+                  {facilitator.specializations.map((exp, index) => (
+                    <ExpertiseBadge key={index} expertise={exp} />
+                  ))}
+                </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      </section> */}
 
-      {/* Accomplishments */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-          Accomplishments
-        </h2>
-        <ul className="space-y-2">
-          {facilitator.accomplishments.map((accomplishment, index) => (
-            <li key={index} className="flex items-start">
-              <Award className="h-5 w-5 mr-2 text-yellow-500 mt-1 flex-shrink-0" />
-              <span>{accomplishment}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Availability Calendar */}
-      {/* <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-          Availability
-        </h2>
-        <div className="flex flex-col md:flex-row gap-4">
-          <Card className="flex-grow">
-            <CardContent className="p-4">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="rounded-md border"
-              />
-            </CardContent>
-          </Card>
-          <Card className="flex-grow">
-            <CardHeader>
-              <CardTitle>Book a Session</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4 text-gray-600">
-                Select a date and time to schedule your session with{" "}
-                {facilitator.name}.
-              </p>
-              <Button className="w-full">Book Now</Button>
-            </CardContent>
-          </Card>
-        </div>
-      </section> */}
-
-      {/* Webinars */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">Webinars</h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Upcoming Webinars</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {facilitator.upcomingWebinars.map((webinar) => (
-                <div key={webinar.id} className="mb-4 last:mb-0">
-                  <h3 className="font-semibold">{webinar.topic}</h3>
-                  <p className="text-sm text-gray-600 flex items-center">
-                    <Clock className="h-4 w-4 mr-1" />
-                    {new Date(webinar.time).toLocaleString()}
-                  </p>
-                  <p className="text-sm text-gray-600 flex items-center">
-                    <Users className="h-4 w-4 mr-1" />
-                    {webinar.students} students registered
-                  </p>
+            {/* Accomplishments */}
+            <Card className="overflow-hidden">
+              <CardHeader className="bg-blue-500 text-white">
+                <CardTitle className="text-xl">Accomplishments</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  {facilitator.accomplishments &&
+                  facilitator.accomplishments?.length > 0
+                    ? facilitator.accomplishments?.map((item, index) => (
+                        <AccomplishmentCard
+                          key={index}
+                          accomplishment={item}
+                          icon={<Award className="h-6 w-6" />}
+                        />
+                      ))
+                    : mockAccomplishments.map((item, index) => (
+                        <AccomplishmentCard
+                          key={index}
+                          accomplishment={item}
+                          icon={<Award className="h-6 w-6" />}
+                        />
+                      ))}
                 </div>
-              ))}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Past Webinars</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {facilitator.pastWebinars.map((webinar) => (
-                <div key={webinar.id} className="mb-4 last:mb-0">
-                  <h3 className="font-semibold">{webinar.topic}</h3>
-                  <p className="text-sm text-gray-600 flex items-center">
-                    <Clock className="h-4 w-4 mr-1" />
-                    {new Date(webinar.time).toLocaleString()}
-                  </p>
-                  <p className="text-sm text-gray-600 flex items-center">
-                    <Users className="h-4 w-4 mr-1" />
-                    {webinar.students} students attended
-                  </p>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+              </CardContent>
+            </Card>
+          </div>
 
-      {/* Feedback and Ratings */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
-          Feedback and Ratings
-        </h2>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              Overall Rating: {facilitator.overallRating}
-              <Star className="h-5 w-5 text-yellow-400 ml-2" />
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Progress value={facilitator.overallRating * 20} className="mb-4" />
-            {facilitator.reviews.map((review) => (
-              <div key={review.id} className="mb-4 last:mb-0">
-                <div className="flex items-center mb-1">
-                  <span className="font-semibold mr-2">{review.student}</span>
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${
-                          i < review.rating
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        }`}
+          {/* Right Column */}
+          <div className="md:col-span-2 ">
+            {/* Webinars */}
+
+            <section className="mb-8 ">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+                Webinars
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="h-full ">
+                  <h3 className="text-xl font-semibold mb-4">
+                    Upcoming Webinars
+                  </h3>
+                  <div className="space-y-4 ">
+                    {upcomingWebinars.map((webinar) => (
+                      <WebinarCard
+                        key={webinar.id}
+                        webinar={webinar}
+                        isPast={false}
                       />
                     ))}
                   </div>
                 </div>
-                <p className="text-gray-600">{review.comment}</p>
+                <div className="">
+                  <h3 className="text-xl font-semibold mb-4">Past Webinars</h3>
+                  <div className="space-y-4">
+                    {pastWebinars.map((webinar) => (
+                      <WebinarCard
+                        key={webinar.id}
+                        webinar={webinar}
+                        isPast={true}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
-            ))}
-          </CardContent>
-        </Card>
-      </section>
+            </section>
+
+            {/* Feedback and Ratings */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-4">
+                  Feedback and Ratings
+                  <div className="flexx items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-5 w-5 ${
+                          i <
+                          Math.floor(
+                            //@ts-ignore
+                            facilitator.rating ? facilitator.rating : 4
+                          )
+                            ? "text-yellow-400"
+                            : "text-gray-300"
+                        }`}
+                        fill={
+                          i <
+                          Math.floor(
+                            //@ts-ignore
+                            facilitator.rating ? facilitator.rating : 4
+                          )
+                            ? "currentColor"
+                            : "none"
+                        }
+                      />
+                    ))}
+                    <span className="ml-2 text-2xl font-bold">
+                      {facilitator.rating?.toString() || "(4)"}
+                    </span>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
