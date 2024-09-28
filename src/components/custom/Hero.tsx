@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 // import { ContentSearch } from "../components/ContentSearch";
 import { motion } from "framer-motion";
 import { Spotlight } from "../ui/spotlight";
+import { semanticSearch } from "@/db/actions.db";
 
 export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -37,6 +38,10 @@ export default function Hero() {
       },
     },
   };
+
+  const [userQuery, setUserQuery] = useState("");
+  const [result, setResult] = useState([]);
+  const [searching, setSearching] = useState(false);
 
   return (
     <div className="flex    flex-col gap-4  max-w-10xl h-[50vh] md:h-[75vh] size-screen mx-auto justify-center  ">
@@ -165,16 +170,28 @@ export default function Hero() {
           Platform that helps students and guidance seekers connect with domain
           experts and seniors.
         </p>
-        <form id="landing-search" className="mt-10 flex items-center space-x-2">
+        <div className="mt-10 flex items-center space-x-2">
           <input
             type="text"
             placeholder="Search for guidance... (Physics, Career, etc.)"
             className="px-4 py-2 border rounded-md w-full md:w-96"
+            value={userQuery}
+            onChange={(e) => {
+              setUserQuery(e.currentTarget.value);
+            }}
           />
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+          <button
+            disabled={searching}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+            onClick={async () => {
+              setSearching(true);
+              // const facilitators = await semanticSearch(userQuery);
+              setSearching(false);
+            }}
+          >
             Search
           </button>
-        </form>
+        </div>
         {/* <ContentSearch tracks={tracks} /> */}
       </motion.div>
       {/* <Spotlight

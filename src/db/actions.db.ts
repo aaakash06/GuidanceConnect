@@ -11,6 +11,12 @@ interface CreateUserClerkType {
   email: string;
   picture: string;
 }
+
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.API_KEY!);
+
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 export async function redirectTo(path: string) {
   redirect(path);
 }
@@ -226,3 +232,42 @@ export const getAllFacilitatorss = async (
     console.log(err);
   }
 };
+
+export async function getAllExperties() {
+  try {
+    await connectToDB();
+    const distinceSpec = await User.distinct("specializations");
+    console.log(distinceSpec);
+    return distinceSpec;
+  } catch (e) {
+    console.log("error; getExperties");
+  }
+}
+
+export async function semanticSearch(inputString: string) {
+  try {
+    const distinceSpec = await getAllExperties();
+    const context = `
+Context: You are being used on a website that connects students with facilitators for guidance. Facilitators have profiles showcasing their specializations, and students can contact them based on these.
+
+Task: Given an array of distinct specializations and a student's query, return a new array containing all relevant specializations matching the query.
+
+Example:
+
+Input: ["Physics", "ML", "Web Development", "Mechanics"] and "I want to connect with a facilitator specialized in grade 11 physics"
+Output: ["Physics", "Mechanics"]
+Student Query: ${inputString}
+Specializations List: ${JSON.stringify(distinceSpec)}
+
+Return an array of matching specializations.
+  `;
+
+    const result = await model.generateContent(context);
+    const response = result.response;
+    const text = response.text();
+    console.log(text);
+    // return text;
+  } catch (e) {
+    console.log("error; gemini call");
+  }
+}
