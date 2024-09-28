@@ -353,7 +353,7 @@ export default function FacilitatorDashboard() {
 
       {/* Right Sidebar */}
       <aside
-        className="bg-white shadow-xl overflow-hidden"
+        className="bg-white max-sm:hidden shadow-xl overflow-hidden"
         style={{
           width: `${sidebarWidth}px`,
           transition: isDragging ? "none" : "width 0.3s ease",
