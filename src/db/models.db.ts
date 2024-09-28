@@ -13,10 +13,46 @@ export interface IUser extends mongoose.Document {
   specializations: string[];
   ratings?: ObjectIdType[];
   rating?: Number;
+  meetingUrl?: string;
+  language: string[];
   // comments?: ObjectIdType[];
   joinAt: Date;
+  price?: number;
+  accomplishments?: string[];
+  phone?: string;
+  linkedin: string;
 }
 
+const userSchema = new mongoose.Schema<IUser>(
+  {
+    name: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
+    linkedin: String,
+    phone: { type: String },
+    email: { type: String, required: true, unique: true },
+    clerkId: { type: String, required: true },
+    password: { type: String },
+    language: { type: [String], default: ["English"] },
+    role: {
+      type: String,
+      required: true,
+      enum: ["student", "facilitator", "null"],
+    },
+    price: { type: Number, default: 0 },
+    bio: { type: String },
+    picture: { type: String },
+    specializations: { type: [String], default: [] },
+    ratings: {
+      type: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
+      default: [],
+    },
+    rating: Number,
+    accomplishments: { type: [String], default: [] },
+    joinAt: { type: Date, default: Date.now },
+    meetingUrl: { type: String, default: "" },
+  },
+  { timestamps: true }
+);
 // Define an interface for Schedule
 interface ISchedule extends Document {
   facilitatorId: ObjectIdType;
@@ -44,31 +80,6 @@ interface IRating extends Document {
   type: "profile" | "meeting";
   meetingId: ObjectIdType;
 }
-
-const userSchema = new mongoose.Schema<IUser>(
-  {
-    name: { type: String, required: true },
-    username: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    clerkId: { type: String, required: true },
-    password: { type: String },
-    role: {
-      type: String,
-      required: true,
-      enum: ["student", "facilitator", "null"],
-    },
-    bio: { type: String },
-    picture: { type: String },
-    specializations: { type: [String], default: [] },
-    ratings: {
-      type: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
-      default: [],
-    },
-    rating: Number,
-    joinAt: { type: Date, default: Date.now },
-  },
-  { timestamps: true }
-);
 
 // Meeting Schema
 const MeetingSchema = new Schema<IMeeting>(
