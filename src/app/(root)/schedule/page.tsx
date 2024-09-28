@@ -6,11 +6,11 @@ import { redirect } from "next/navigation";
 
 export default async function Schedule() {
   const { userId } = auth();
-  // const userRole = await getRoleByClerkId(userId!);
-  // if (userRole == "null") {
-  //   return redirect("/");
-  // } else if (userRole == "student") {
-  //   return <StudentSchedulePage />;
-  // }
-  // return <TeacherSchedulePage />;
+  const userRole = await getRoleByClerkId(userId!);
+  if (userRole == "null") {
+    return redirect("/");
+  } else if (userRole == "student") {
+    return <StudentSchedulePage />;
+  }
+  return <TeacherSchedulePage />;
 }
