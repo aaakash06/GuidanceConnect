@@ -21,7 +21,15 @@ import {
 
 import Hero from "@/components/custom/Hero";
 
-const FeatureCard = ({ icon: Icon, title, description }) => {
+const FeatureCard = ({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: any;
+  title: string;
+  description: string;
+}) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
@@ -43,7 +51,15 @@ const FeatureCard = ({ icon: Icon, title, description }) => {
   );
 };
 
-const StepCard = ({ number, title, description }) => (
+const StepCard = ({
+  number,
+  title,
+  description,
+}: {
+  number: number;
+  title: string;
+  description: string;
+}) => (
   <motion.div
     initial={{ opacity: 0, y: 50 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -61,7 +77,15 @@ const StepCard = ({ number, title, description }) => (
   </motion.div>
 );
 
-const FAQItem = ({ question, answer, value }) => {
+const FAQItem = ({
+  question,
+  answer,
+  value,
+}: {
+  question: string;
+  answer: string;
+  value: string;
+}) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
