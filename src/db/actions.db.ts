@@ -181,9 +181,9 @@ export const updateUserInfo = async (facilitator: string, clerkId: string) => {
 };
 
 export const getAllFacilitatorss = async (
+  search?: string,
   priceLow?: number,
   priceHigh?: number,
-  search?: string,
   language?: string,
   experience?: string,
   filter?: string,
@@ -217,6 +217,7 @@ export const getAllFacilitatorss = async (
     ];
   }
 
+  console.log(query);
   // Pagination setup
   const limit = 10; // Set a default limit for items per page
   const skip = page ? (page - 1) * limit : limit;
@@ -224,8 +225,9 @@ export const getAllFacilitatorss = async (
   try {
     await connectToDB();
     // Execute the query with pagination and return the result
-    const facilitators = await User.find(query).skip(skip).limit(limit);
-
+    const facilitators = await User.find(query);
+    // const facilitators = await User.find(query).skip(skip).limit(limit);
+    console.log(facilitators);
     return facilitators;
   } catch (err) {
     console.log("coudn't fetch facilitator with query ");

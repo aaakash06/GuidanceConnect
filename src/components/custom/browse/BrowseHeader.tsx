@@ -8,10 +8,31 @@ import {
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useEffect } from "react";
+import { changeQuery } from "@/lib/utils";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const BrowseHeader = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q");
   const [searchTerm, setSearchTerm] = React.useState("");
+
+  useEffect(() => {
+    const debounceTimeOut = setTimeout(() => {
+      if (searchTerm) {
+        const newUrl = changeQuery(searchParams.toString(), "q", searchTerm);
+        router.push(newUrl, { scroll: false });
+      } else {
+        router.push("/browse", { scroll: false });
+      }
+    }, 500);
+
+    return () => clearTimeout(debounceTimeOut);
+  }, [searchTerm, query, router]);
+
   return (
     <header className="bg-white shadow-md">
       <div className="container mx-auto px-6 py-6 flex flex-wrap items-center justify-between">
