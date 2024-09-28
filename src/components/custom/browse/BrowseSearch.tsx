@@ -1,5 +1,5 @@
 "use client";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import React from "react";
 
 const BrowseSearch = () => {

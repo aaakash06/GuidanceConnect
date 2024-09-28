@@ -129,7 +129,7 @@ export default function StudentBrowsingPage() {
       <main className="flex-grow container mx-auto px-6 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
-          <aside className="w-full lg:w-1/4 bg-white p-6 rounded-xl shadow-lg">
+          <aside className="w-full lg:w-1/4 bg-white p-6 rounded-xl shadow-lg ">
             <h2 className="text-2xl font-semibold mb-6 text-[rgba(52, 108, 228, 1)]">
               Refine Your Search
             </h2>
