@@ -54,41 +54,38 @@ export default function FacilitatorDashboard() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [sidebarWidth, setSidebarWidth] = useState(256);
   const [isDragging, setIsDragging] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const getMaxWidth = useCallback(() => {
     if (windowWidth >= 1024 && windowWidth <= 1450) {
       return 325;
+    } else if (windowWidth <= 910 && windowWidth >= 800) {
+      return 400;
+    } else if (windowWidth < 800 && windowWidth >= 724) {
+      return 350;
+    } else if (windowWidth < 724) {
+      return 200;
     }
-
-    else if (windowWidth <=910 && windowWidth >=800) {
-      return 400
-    }
-    
-    else if (windowWidth < 800 && windowWidth >=724) {
-      return 350
-    }
-    else if (windowWidth <724) {
-      return 200
-    } 
     return 500;
   }, [windowWidth]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default selection behavior
     setIsDragging(true);
-    document.body.style.userSelect = 'none'; // Disable text selection
+    document.body.style.userSelect = "none"; // Disable text selection
   }, []);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-    document.body.style.userSelect = ''; // Re-enable text selection
+    document.body.style.userSelect = ""; // Re-enable text selection
   }, []);
 
   const handleMouseMove = useCallback(
@@ -104,21 +101,23 @@ export default function FacilitatorDashboard() {
 
   useEffect(() => {
     if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove as any);
-      window.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener("mousemove", handleMouseMove as any);
+      window.addEventListener("mouseup", handleMouseUp);
     }
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove as any);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove as any);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
     <div className="flex h-screen bg-gray-100" onMouseMove={handleMouseMove}>
-
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto" style={{ width: `calc(100% - ${sidebarWidth}px)` }}>
+      <main
+        className="flex-1 overflow-y-auto"
+        style={{ width: `calc(100% - ${sidebarWidth}px)` }}
+      >
         <div className="container mx-auto px-6 py-8">
           <h1 className="text-3xl font-semibold text-gray-800">Dashboard</h1>
 
@@ -283,13 +282,16 @@ export default function FacilitatorDashboard() {
       <div
         className="w-1 bg-gray-200 cursor-ew-resize hover:bg-gray-300 transition-colors"
         onMouseDown={handleMouseDown}
-        style={{ touchAction: 'none' }} // Prevents scrolling on touch devices
+        style={{ touchAction: "none" }} // Prevents scrolling on touch devices
       />
 
       {/* Right Sidebar */}
       <aside
-        className="bg-white shadow-md overflow-hidden"
-        style={{ width: `${sidebarWidth}px`, transition: isDragging ? 'none' : 'width 0.3s ease' }}
+        className="bg-white max-sm:hidden shadow-md overflow-hidden"
+        style={{
+          width: `${sidebarWidth}px`,
+          transition: isDragging ? "none" : "width 0.3s ease",
+        }}
       >
         <div className="p-4">
           <h3 className="font-semibold text-gray-800">Notifications</h3>
