@@ -158,11 +158,13 @@ export const updateUserInfo = async (facilitator: string, clerkId: string) => {
   const updatedFacilitator = JSON.parse(facilitator);
   try {
     await connectToDB();
-    const updatedUser = User.findOneAndUpdate(
+    console.log(updatedFacilitator);
+    const updatedUser = await User.findOneAndUpdate(
       { clerkId },
-      { updatedFacilitator },
+      { ...updatedFacilitator },
       { new: true }
     );
+    console.log(updatedUser);
 
     console.log("user updated");
   } catch (e) {

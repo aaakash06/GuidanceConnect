@@ -15,11 +15,10 @@ export default function FacilitatorEditProfile({ user }: { user: string }) {
   const User: IUser = JSON.parse(user);
   const [facilitator, setFacilitator] = React.useState({
     price: User.price,
-    picture: User.picture,
     bio: User.bio,
-    expertise: User.specializations,
+    specializations: User.specializations || [],
     accomplishments: User.accomplishments || [],
-    meetingUrl: User.meetingUrl,
+    meetingUrl: User.meetingUrl || "",
     phone: User.phone || "",
     linkedin: User.linkedin || "",
   });
@@ -36,10 +35,10 @@ export default function FacilitatorEditProfile({ user }: { user: string }) {
   };
 
   const handleAddExpertise = () => {
-    if (newExpertise && !facilitator.expertise.includes(newExpertise)) {
+    if (newExpertise && !facilitator.specializations.includes(newExpertise)) {
       setFacilitator((prev) => ({
         ...prev,
-        expertise: [...prev.expertise, newExpertise],
+        specializations: [...prev.specializations, newExpertise],
       }));
       setNewExpertise("");
     }
@@ -48,7 +47,7 @@ export default function FacilitatorEditProfile({ user }: { user: string }) {
   const handleRemoveExpertise = (item: string) => {
     setFacilitator((prev) => ({
       ...prev,
-      expertise: prev.expertise.filter((e) => e !== item),
+      specializations: prev.specializations.filter((e) => e !== item),
     }));
   };
 
@@ -159,7 +158,7 @@ export default function FacilitatorEditProfile({ user }: { user: string }) {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-wrap gap-2">
-              {facilitator.expertise.map((item, index) => (
+              {facilitator.specializations.map((item, index) => (
                 <Badge
                   key={index}
                   variant="secondary"
