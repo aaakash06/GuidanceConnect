@@ -3,9 +3,11 @@ import { getCalendlyByClerkId } from "@/db/actions.db";
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
 
-const BookingPage = async () => {
+const BookingPage = async ({ params }: { params: { id: string } }) => {
   const { userId } = auth();
-  const calendlyURL: string | null = await getCalendlyByClerkId(userId!);
+  const id = params.id;
+  if (id == userId) return <div>you can't visit this</div>;
+  const calendlyURL: string | null = await getCalendlyByClerkId(id!);
   if (!calendlyURL) return <div>No meeting Yet</div>;
   return (
     <>
