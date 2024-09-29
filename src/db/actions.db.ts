@@ -257,34 +257,6 @@ export async function getAllExperties() {
   }
 }
 
-// export async function semanticSearch(inputString: string) {
-//   try {
-//     const distinceSpec = await getAllExperties();
-//     const context = `
-// Context: You are being used on a website that connects students with facilitators for guidance. Facilitators have profiles showcasing their specializations, and students can contact them based on these.
-
-// Task: Given an array of distinct specializations and a student's query, return a new array containing all relevant specializations matching the query.
-
-// Example:
-
-// Input: ["Physics", "ML", "Web Development", "Mechanics"] and "I want to connect with a facilitator specialized in grade 11 physics"
-// Output: ["Physics", "Mechanics"]
-// Student Query: ${inputString}
-// Specializations List: ${JSON.stringify(distinceSpec)}
-
-// Return an array of matching specializations.
-//   `;
-
-//     const result = await model.generateContent(context);
-//     const response = result.response;
-//     const text = response.text();
-//     console.log(text);
-//     // return text;
-//   } catch (e) {
-//     console.log("error; gemini call");
-//   }
-// }
-
 export async function searchGem(text: string) {
   const distinceSpec = await getAllExperties();
   const model = genAI.getGenerativeModel({
