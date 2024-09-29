@@ -11,7 +11,8 @@ import {
   DialogContent,
   DialogTitle,
 } from "../ui/dialog";
-import { Star, Clock, DollarSign, Globe, Link } from "lucide-react";
+import { Star, Clock, DollarSign, Globe } from "lucide-react";
+import Link from "next/link";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -130,114 +131,14 @@ export default function Hero() {
                     <Globe className="w-4 h-4 mr-2 text-purple-500" />
                     <span>{facilitator.language.join(", ")}</span>
                   </div>
-                  {/* <div className="flex items-center text-gray-700">
-                <GraduationCap className="w-4 h-4 mr-2 text-red-500" />
-                <span className="truncate">
-                {facilitator.education.split(",")[0]}
-              </span>
-              </div> */}
                 </div>
               </CardContent>
               <CardFooter>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button className="w-full bg-[rgb(52,108,228)]/[.85] hover:bg-[rgb(52,108,228)] text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300">
-                      View Profile
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle className="text-2xl font-bold text-[rgba(52, 108, 228, 1)]">
-                        {facilitator.name}
-                      </DialogTitle>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                      <div className="flex items-start gap-4">
-                        <Avatar className="h-24 w-24">
-                          <AvatarImage
-                            src={facilitator.picture}
-                            alt={facilitator.name}
-                          />
-                          <AvatarFallback className="bg-[rgba(52, 108, 228, 0.1)] text-[rgba(52, 108, 228, 1)] text-2xl font-bold">
-                            {facilitator.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-semibold text-lg text-gray-800">
-                            {facilitator.name}
-                          </p>
-                          <p className="text-sm text-gray-600 mt-1">
-                            {facilitator.bio ?? "There is no bio"}
-                          </p>
-                        </div>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2 text-[rgba(52, 108, 228, 1)]">
-                          Expertise
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                          {/* {facilitator.specializations.length == 0 &&
-                        "something"}{" "} */}
-                          {facilitator.specializations.length > 0
-                            ? facilitator.specializations.map(
-                                (skill, index) => (
-                                  <Badge
-                                    key={index}
-                                    variant="secondary"
-                                    className="bg-[rgba(52, 108, 228, 0.1)]-100 text-[rgba(52, 108, 228, 1)]"
-                                  >
-                                    {skill}
-                                  </Badge>
-                                )
-                              )
-                            : ["none", "none"].map((skill, index) => (
-                                <Badge
-                                  key={index}
-                                  variant="secondary"
-                                  className="bg-[rgba(52, 108, 228, 0.1)]-100 text-[rgba(52, 108, 228, 1)]"
-                                >
-                                  {skill}
-                                </Badge>
-                              ))}
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <h3 className="font-semibold text-[rgba(52, 108, 228, 1)] mb-1">
-                            Languages
-                          </h3>
-                          <p className="text-sm text-gray-700">
-                            {facilitator.language.join(", ")}
-                          </p>
-                        </div>
-                        {/* <div>
-                    <h3 className="font-semibold text-[rgba(52, 108, 228, 1)] mb-1">
-                      Experience
-                    </h3>
-                    <p className="text-sm text-gray-700">
-                      {facilitator.experience}
-                    </p>
-                  </div> */}
-                      </div>
-                      {/* <div>
-                  <h3 className="font-semibold text-[rgba(52, 108, 228, 1)] mb-1">
-                    Education
-                  </h3>
-                  <p className="text-sm text-gray-700">
-                    {facilitator.education}
-                  </p>
-                </div> */}
-                    </div>
-                    <Button className="w-full bg-dark-100 hover:bg-dark-400 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 ">
-                      <Link href={`/book/${facilitator.clerkId}`}>
-                        Book a Session
-                      </Link>
-                    </Button>
-                  </DialogContent>
-                </Dialog>
+                <Link href={"/browse"}>
+                  <Button className="w-full bg-[rgb(52,108,228)]/[.85] hover:bg-[rgb(52,108,228)] text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300">
+                    View Profile
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           ))}
