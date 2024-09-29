@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { connectToDB } from "./connect.db";
 import { IUser, User } from "./models.db";
-import { FilterQuery } from "mongoose";
+import { FilterQuery, model } from "mongoose";
 import { Tag } from "lucide-react";
 interface CreateUserClerkType {
   clerkId: string;
@@ -24,12 +24,6 @@ export async function redirectTo(path: string) {
   redirect(path);
 }
 
-const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash-8b-exp-0924",
-  systemInstruction:
-    "You will be given a prompt by a student who is seeking a guidance provider or a facilitator in a specific field. You have to return a python list of 4 one word specializations that the guidance provider may have. Only choose the specializations from the list below and match the capitalization too. ['NEB', 'biology', 'chemistry', 'mathematics', 'stock market', 'Fintech', 'foreign exchange', 'physics', 'CEE', 'Cybersec', 'Programming', 'Artificial Intelligence', 'DSA', 'tech interviews', 'IELTS', 'TOEFL', 'SAT', 'Foreign study']",
-});
-
 const generationConfig = {
   temperature: 1,
   topP: 0.95,
@@ -38,43 +32,8 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
-export async function searchGem(text: string) {
-  const chatSession = model.startChat({
-    generationConfig,
-    // safetySettings: Adjust safety settings
-    // See https://ai.google.dev/gemini-api/docs/safety-settings
-    history: [
-      {
-        role: "user",
-        parts: [
-          {
-            text: "I want to connect with a facilitator specialized in grade 11 physics",
-          },
-        ],
-      },
-      {
-        role: "model",
-        parts: [{ text: "['Physics', 'Mechanics', 'NEB', 'Conceptual ']" }],
-      },
-      {
-        role: "user",
-        parts: [{ text: "I want to know a SAT tutor" }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "['SAT', 'IELTS', 'foreign exchange', 'TOEFL']" }],
-      },
-    ],
-  });
-
-  const result = await chatSession.sendMessage(text);
-  console.log(result.response.text());
-  // alert(result.response.text());
-}
-
 export async function createUserByClerk(user: CreateUserClerkType) {
   try {
-    await search();
     await connectToDB();
     const newUser = {
       ...user,
@@ -298,30 +257,90 @@ export async function getAllExperties() {
   }
 }
 
-export async function semanticSearch(inputString: string) {
+// export async function semanticSearch(inputString: string) {
+//   try {
+//     const distinceSpec = await getAllExperties();
+//     const context = `
+// Context: You are being used on a website that connects students with facilitators for guidance. Facilitators have profiles showcasing their specializations, and students can contact them based on these.
+
+// Task: Given an array of distinct specializations and a student's query, return a new array containing all relevant specializations matching the query.
+
+// Example:
+
+// Input: ["Physics", "ML", "Web Development", "Mechanics"] and "I want to connect with a facilitator specialized in grade 11 physics"
+// Output: ["Physics", "Mechanics"]
+// Student Query: ${inputString}
+// Specializations List: ${JSON.stringify(distinceSpec)}
+
+// Return an array of matching specializations.
+//   `;
+
+//     const result = await model.generateContent(context);
+//     const response = result.response;
+//     const text = response.text();
+//     console.log(text);
+//     // return text;
+//   } catch (e) {
+//     console.log("error; gemini call");
+//   }
+// }
+
+export async function searchGem(text: string) {
+  const distinceSpec = await getAllExperties();
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash-8b-exp-0924",
+    systemInstruction: `You will be given a prompt by a student who is seeking a guidance provider or a facilitator in a specific field. You have to return an array of specializations that the guidance provider may have. Only choose the specializations from the array below and match the capitalization too. ${distinceSpec}
+    
+    If nothing matches, return empty array.`,
+  });
+  const chatSession = model.startChat({
+    generationConfig,
+    // safetySettings: Adjust safety settings
+    // See https://ai.google.dev/gemini-api/docs/safety-settings
+    history: [
+      {
+        role: "user",
+        parts: [
+          {
+            text: "I want to connect with a facilitator specialized in grade 11 physics",
+          },
+        ],
+      },
+      {
+        role: "model",
+        parts: [{ text: "['Physics', 'Mechanics', 'NEB', 'Conceptual ']" }],
+      },
+      {
+        role: "user",
+        parts: [{ text: "I want to know a SAT tutor" }],
+      },
+      {
+        role: "model",
+        parts: [{ text: "['SAT', 'IELTS', 'foreign exchange', 'TOEFL']" }],
+      },
+    ],
+  });
+  // console.log(distinceSpec);
+  let result = await chatSession.sendMessage(text);
+  let stringg = result.response.text();
+  stringg = stringg.replace(/'/g, '"');
+  const spec = JSON.parse(stringg);
+  const ret = await getFacilitatorsBySpecialization(spec);
+
+  console.log(ret);
+  return JSON.stringify(ret);
+}
+
+async function getFacilitatorsBySpecialization(inputSpecializations: string[]) {
   try {
-    const distinceSpec = await getAllExperties();
-    const context = `
-Context: You are being used on a website that connects students with facilitators for guidance. Facilitators have profiles showcasing their specializations, and students can contact them based on these.
+    const facilitators = await User.find({
+      role: "facilitator",
+      specializations: { $in: inputSpecializations },
+    });
 
-Task: Given an array of distinct specializations and a student's query, return a new array containing all relevant specializations matching the query.
-
-Example:
-
-Input: ["Physics", "ML", "Web Development", "Mechanics"] and "I want to connect with a facilitator specialized in grade 11 physics"
-Output: ["Physics", "Mechanics"]
-Student Query: ${inputString}
-Specializations List: ${JSON.stringify(distinceSpec)}
-
-Return an array of matching specializations.
-  `;
-
-    const result = await model.generateContent(context);
-    const response = result.response;
-    const text = response.text();
-    console.log(text);
-    // return text;
-  } catch (e) {
-    console.log("error; gemini call");
+    return facilitators;
+  } catch (error) {
+    console.error("Error fetching facilitators by specialization:", error);
+    return [];
   }
 }
