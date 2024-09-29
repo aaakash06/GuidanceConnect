@@ -127,6 +127,8 @@ The project relies on the following core dependencies, all of which are listed i
 
 To view the full list of dependencies, consult the `package-lock.json` file.
 
+Recommendation system repo link: https://github.com/aaakash06/guidance-connect-rec
+
 ## Contributors
 
 - Aakash Bagale
